@@ -15,11 +15,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var map:HashMap<String?,String?> = HashMap()
+        var map:HashMap<String,String> = HashMap()
 
         CommonRequest.getCategories(map,object :IDataCallBack<CategoryList>{
             override fun onSuccess(p0: CategoryList?) {
-                //知道肯定不为空返回一个可变的list
                 var category:MutableList<Category> = p0!!.categories
                 val size:Int = category.size
                 for ( (i,category) in category.withIndex()){

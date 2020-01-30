@@ -10,11 +10,10 @@ import android.util.Log
  */
 object Logutils {
 
-    var sTAG: String = "LogUtil"
+    private var sTAG: String = "LogUtil"
 
     //release || debug
-    var sIsRelease = false
-
+    private var sIsRelease = false
 
 
     fun init(baseTag: String, isRelase: Boolean) {
