@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">TingXiMalaYa</string>
+    <string name="app_name">喜马拉雅</string>
+    <string-array name="indicator_name">
+        <item>推荐</item>
+        <item>订阅</item>
+        <item>历史</item>
+
+    </string-array>
 </resources>
