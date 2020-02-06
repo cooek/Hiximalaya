@@ -9,6 +9,7 @@
         app:cardCornerRadius="6dp"
         app:cardElevation="1dp">
 
+
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="80dp">
@@ -65,6 +66,7 @@
                             android:layout_width="6dp"
                             android:layout_height="6dp"
                             android:src="@mipmap/ic_sound" />
+
 
                     <TextView
                             android:id="@+id/album_play_count"
