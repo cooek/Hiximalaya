@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.tingximalaya.MainActivity
 import com.example.tingximalaya.base.BaseFragment
+import com.example.tingximalaya.utils.Constants
 import com.example.tingximalaya.utils.FragmentCraetor
 
 /**
@@ -22,7 +23,7 @@ class MainContentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     }
 
     override fun getCount(): Int {
-        return  FragmentCraetor().INDEX_PAGE_COUNT
+        return  Constants.INDEX_PAGE_COUNT
     }
 
 

@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.runOnUiThread
+import org.jetbrains.anko.toast
 
 
 /**
@@ -13,16 +16,29 @@ import androidx.fragment.app.Fragment
  * @Author:cooek@moxfail.com$
  * @Date: 2020/2/3$ 14:49$
  */
- abstract class BaseFragment : Fragment() {
-
+open abstract class BaseFragment : Fragment(), AnkoLogger {
     private var mRootView: View? = null
 
-   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mRootView = onSubViewLoad(inflater,container)
-        return mRootView
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return onSubViewLoad(inflater, container)
     }
+
 
     abstract fun onSubViewLoad(layoutInflater: LayoutInflater, container: ViewGroup?): View?
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        initView()
+    }
+    open fun initView() {
+    }
+
+    open fun MyToas(msg: String) {
+        context?.runOnUiThread { toast(msg) }
+    }
 
 }

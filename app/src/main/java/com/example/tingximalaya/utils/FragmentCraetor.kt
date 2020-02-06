@@ -13,13 +13,7 @@ import com.example.tingximalaya.fragments.SubscritFragment
  */
 class FragmentCraetor {
 
-    public val INDEX_RECOMMENT = 0
 
-    public val INDEX_SUBSCRIPT = 1
-
-    public val INDEX_HISTORY = 2
-
-    public val INDEX_PAGE_COUNT = 3
 
 
     private var sCache: HashMap<Int, BaseFragment> = HashMap()
@@ -31,9 +25,9 @@ class FragmentCraetor {
             return basefragments
         }
         when (index) {
-            INDEX_RECOMMENT -> basefragments = RecommendFragment()
-            INDEX_SUBSCRIPT -> basefragments = SubscritFragment()
-            INDEX_HISTORY -> basefragments = HistoryFragment()
+            Constants.INDEX_RECOMMENT -> basefragments = RecommendFragment()
+            Constants.INDEX_SUBSCRIPT -> basefragments = SubscritFragment()
+            Constants.INDEX_HISTORY -> basefragments = HistoryFragment()
         }
         sCache.put(index, basefragments!!)
         return basefragments

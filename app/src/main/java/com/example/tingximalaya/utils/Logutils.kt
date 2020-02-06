@@ -1,6 +1,8 @@
 package com.example.tingximalaya.utils
 
 import android.util.Log
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.debug
 
 /**
  * @return:$
@@ -8,12 +10,13 @@ import android.util.Log
  * @Author:cooek@foxmail.com$
  * @Date: 2020/1/29$ 16:10$
  */
-object Logutils {
+object Logutils:AnkoLogger{
 
     private var sTAG: String = "LogUtil"
 
     //release || debug
     private var sIsRelease = false
+
 
 
     fun init(baseTag: String, isRelase: Boolean) {
@@ -22,33 +25,34 @@ object Logutils {
     }
 
 
-    fun d(TAG: String, content: String) {
+    fun d( content: String) {
+
         if (!sIsRelease) {
-            Log.d("[$sTAG]$TAG", content)
+            debug { content }
         }
     }
 
     fun v(TAG: String, content: String) {
         if (!sIsRelease) {
-            Log.d("[$sTAG]$TAG", content)
+            Log.v("[$sTAG]$TAG", content)
         }
     }
 
     fun i(TAG: String, content: String) {
         if (!sIsRelease) {
-            Log.d("[$sTAG]$TAG", content)
+            Log.i("[$sTAG]$TAG", content)
         }
     }
 
     fun w(TAG: String, content: String) {
         if (!sIsRelease) {
-            Log.d("[$sTAG]$TAG", content)
+            Log.w("[$sTAG]$TAG", content)
         }
     }
 
     fun e(TAG: String, content: String) {
         if (!sIsRelease) {
-            Log.d("[$sTAG]$TAG", content)
+            Log.e("[$sTAG]$TAG", content)
         }
     }
 

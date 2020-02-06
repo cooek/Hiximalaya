@@ -9,9 +9,11 @@ import com.example.tingximalaya.utils.Logutils
 import kotlinx.android.synthetic.main.activity_main.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.debug
 
 
-class MainActivity : FragmentActivity() {
+class MainActivity : FragmentActivity() ,AnkoLogger{
 
     private var indicator: IndiocatorAdapter? = null
 
@@ -24,9 +26,9 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun initEvent() {
-        indicator?.setOnIndicatorTapClickListener(object : IndiocatorAdapter.OnIndicatorTapClickListener {
+        indicator?.setOnIndicatorTapClickListener(object :
+            IndiocatorAdapter.OnIndicatorTapClickListener {
             override fun onTabClick(index: Int) {
-                Logutils.d(MainActivity::class.java.toString(), "点击了第$index"+"条目")
                 if (content_pager != null) {
                     content_pager.setCurrentItem(index)
                 }
@@ -37,19 +39,23 @@ class MainActivity : FragmentActivity() {
 
     private fun initView() {
         //指示器相关
-        main_indicator.setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.mainbackcolor))
-
+        main_indicator.setBackgroundColor(
+            ContextCompat.getColor(this@MainActivity, R.color.mainbackcolor)
+        )
+        //初始化-传递参数-全局变量
         indicator = IndiocatorAdapter(this)
-
         val commonNavigator = CommonNavigator(this)
+        //指示器适配器
         commonNavigator.adapter = indicator
-        //获取support包
-        val supportFragments = supportFragmentManager
-        val mainContentAdapter = MainContentAdapter(supportFragments)
-        //绑定viewpager  视图
-        content_pager.adapter = mainContentAdapter
+        //文本自我调节宽高
+        commonNavigator.isAdjustMode = true
         main_indicator.navigator = commonNavigator
+        //ViewPager适配器
+        content_pager.adapter = MainContentAdapter(supportFragmentManager)
+        //绑定viewpager and indicator
         ViewPagerHelper.bind(main_indicator, content_pager)
+
+
     }
 
 

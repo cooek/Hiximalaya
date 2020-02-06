@@ -3,6 +3,7 @@ package com.example.tingximalaya.adapters
 import android.content.Context
 import android.graphics.Color
 import com.example.tingximalaya.R
+import com.example.tingximalaya.utils.Logutils
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
@@ -37,7 +38,9 @@ class IndiocatorAdapter(context: Context?) : CommonNavigatorAdapter() {
         simplePagerTitleView.setOnClickListener {
             if(onIndicatorTapClickListeners!=null){
                 onIndicatorTapClickListeners.onTabClick(index)
+
             }
+
         }
         return simplePagerTitleView
     }

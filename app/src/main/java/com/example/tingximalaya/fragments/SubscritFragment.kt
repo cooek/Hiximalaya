@@ -13,8 +13,11 @@ import com.example.tingximalaya.base.BaseFragment
  * @Date: 2020/2/3$ 14:53$
  */
 class SubscritFragment :BaseFragment(){
+
+
     override fun onSubViewLoad(layoutInflater: LayoutInflater, container: ViewGroup?): View? {
         return layoutInflater.inflate(R.layout.fragment_subscript, container,false)
     }
+
 
 }
