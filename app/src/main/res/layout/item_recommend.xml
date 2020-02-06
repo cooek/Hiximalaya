@@ -91,6 +91,8 @@
                             android:layout_height="10dp"
                             android:src="@mipmap/play_info" />
 
+
+
                     <TextView
                             android:id="@+id/album_content_size"
                             android:layout_width="45dp"
