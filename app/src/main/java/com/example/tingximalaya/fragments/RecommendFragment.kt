@@ -59,6 +59,7 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack {
         linearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager?.orientation = LinearLayoutManager.VERTICAL
         recommend_list.layoutManager = linearLayoutManager
+
         recommend_list.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect,
