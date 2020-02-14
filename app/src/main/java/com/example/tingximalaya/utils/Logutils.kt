@@ -25,10 +25,10 @@ object Logutils:AnkoLogger{
     }
 
 
-    fun d( content: String) {
+    fun d(TAG: String, content: String) {
 
         if (!sIsRelease) {
-            debug { content }
+            Log.d("[$sTAG]$TAG", content)
         }
     }
 

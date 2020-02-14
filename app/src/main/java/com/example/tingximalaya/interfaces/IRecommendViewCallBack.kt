@@ -17,12 +17,19 @@ interface IRecommendViewCallBack {
 
     fun onRecommendListLoaded(reuslt: List<Album>)
 
+    /**
+     * 网络错误
+     */
+    fun onNetworkError()
 
     /**
-     * 加载更多
+     * 数据为空
      */
-    fun onLoaderMore(result: List<Album>)
+    fun onEmpty()
 
+    /**
+     * 正在加载
+     */
+    fun onLoading()
 
-    fun onRefreshMore(result: List<Album>)
 }

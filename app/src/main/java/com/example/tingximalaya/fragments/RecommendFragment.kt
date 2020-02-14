@@ -1,7 +1,6 @@
 package com.example.tingximalaya.fragments
 
 import android.graphics.Rect
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +11,9 @@ import com.example.tingximalaya.adapters.RecommendListAdapter
 import com.example.tingximalaya.base.BaseFragment
 import com.example.tingximalaya.interfaces.IRecommendViewCallBack
 import com.example.tingximalaya.presenters.RecommendPresenter
-import com.example.tingximalaya.utils.Constants
 import com.example.tingximalaya.utils.Logutils
-import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
-import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
-import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack
+import com.example.tingximalaya.views.UILoder
 import com.ximalaya.ting.android.opensdk.model.album.Album
-import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList
 import kotlinx.android.synthetic.main.fragment_recommend.*
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 
@@ -28,17 +23,20 @@ import net.lucode.hackware.magicindicator.buildins.UIUtil
  * @Author:cooek@moxfail.com$$
  * @Date: 2020/2/3$ 14:53$
  */
-class RecommendFragment : BaseFragment(), IRecommendViewCallBack {
+class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetryClikListener {
 
 
-    private val recommendPresenter: RecommendPresenter by lazy { RecommendPresenter }
+    private var muiLoder: UILoder? = null
 
-    private val recommendListAdapter: RecommendListAdapter by lazy { RecommendListAdapter() }
+
+    private val mRecommendPresenter: RecommendPresenter by lazy { RecommendPresenter }
+
+    private val mRecommendListAdapter: RecommendListAdapter by lazy { RecommendListAdapter() }
 
     /**
      * IllegalArgumentException
      */
-    private var linearLayoutManager: LinearLayoutManager? = null
+    private var mLlinearLayoutManager: LinearLayoutManager? = null
 
     private var rootView: View? = null
 
@@ -46,7 +44,32 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack {
      * onCreateView 方法
      */
     override fun onSubViewLoad(layoutInflater: LayoutInflater, container: ViewGroup?): View? {
+
+        muiLoder = object : UILoder(context) {
+
+            override fun getSuccessView(container: ViewGroup?): View? {
+
+                return cretaeSuccessView(layoutInflater, container)
+            }
+
+        }
+        mRecommendPresenter.RegisterViewcallback(this)
+        mRecommendPresenter.getRecommendList()
+
+        if (muiLoder?.parent is ViewGroup) {
+            var mload = muiLoder?.parent as ViewGroup
+            mload.removeView(mload)
+
+        }
+        muiLoder?.onRetryClikListeners(this)
+        return muiLoder
+
+    }
+
+    private fun cretaeSuccessView(layoutInflater: LayoutInflater, container: ViewGroup?): View? {
+
         rootView = layoutInflater.inflate(R.layout.fragment_recommend, container, false)
+
         return rootView
     }
 
@@ -56,9 +79,9 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack {
      */
 
     override fun initView() {
-        linearLayoutManager = LinearLayoutManager(context)
-        linearLayoutManager?.orientation = LinearLayoutManager.VERTICAL
-        recommend_list.layoutManager = linearLayoutManager
+        mLlinearLayoutManager = LinearLayoutManager(context)
+        mLlinearLayoutManager?.orientation = LinearLayoutManager.VERTICAL
+        recommend_list.layoutManager = mLlinearLayoutManager
 
         recommend_list.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
@@ -75,24 +98,15 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack {
                 }
             }
         })
-        recommendPresenter.RegisterViewcallback(this).apply {
-            recommendPresenter.getRecommendList()
-        }
-        recommend_list.adapter = recommendListAdapter
+
+        recommend_list.adapter = mRecommendListAdapter
     }
 
 
     override fun onRecommendListLoaded(reuslt: List<Album>) {
         //注意 配置了androidx的同学 RecyclerView 在androidx.recyclerview.widget.RecyclerView 这里
-        recommendListAdapter?.setData(reuslt)
-    }
-
-    override fun onLoaderMore(result: List<Album>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onRefreshMore(result: List<Album>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mRecommendListAdapter.setData(reuslt)
+        muiLoder?.updateStatus(UILoder.UlStatus.SUCCESS)
     }
 
     /**
@@ -100,8 +114,30 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack {
      */
     override fun onDestroyView() {
         super.onDestroyView()
-        if (recommendPresenter != null) {
-            recommendPresenter.unRegisterViewcallback(this)
+
+        mRecommendPresenter.unRegisterViewcallback(this)
+
+    }
+
+    override fun onNetworkError() {
+        muiLoder?.updateStatus(UILoder.UlStatus.NETWORK_ERROR)
+    }
+
+    override fun onEmpty() {
+        muiLoder?.updateStatus(UILoder.UlStatus.EMPTY)
+
+    }
+
+    override fun onLoading() {
+        muiLoder?.updateStatus(UILoder.UlStatus.LoADING)
+
+    }
+
+    //网络错误接口回调
+    override fun onRetryClick() {
+        if (mRecommendPresenter != null) {
+            mRecommendPresenter.getRecommendList()
         }
     }
+
 }

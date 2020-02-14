@@ -28,6 +28,7 @@ open abstract class BaseFragment : Fragment(), AnkoLogger {
     }
 
 
+
     abstract fun onSubViewLoad(layoutInflater: LayoutInflater, container: ViewGroup?): View?
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

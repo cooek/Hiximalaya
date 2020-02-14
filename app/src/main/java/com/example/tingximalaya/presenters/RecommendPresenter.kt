@@ -1,6 +1,5 @@
 package com.example.tingximalaya.presenters
 
-import com.example.tingximalaya.fragments.RecommendFragment
 import com.example.tingximalaya.interfaces.IRecommendPresenter
 import com.example.tingximalaya.interfaces.IRecommendViewCallBack
 import com.example.tingximalaya.utils.Constants
@@ -25,7 +24,7 @@ object RecommendPresenter : IRecommendPresenter {
      * 注册到list
      */
     override fun RegisterViewcallback(iRecommendViewCallBack: IRecommendViewCallBack) {
-        if (!mCallback.contains(iRecommendViewCallBack)) {
+        if (mCallback != null && !mCallback.contains(iRecommendViewCallBack)) {
             mCallback.add(iRecommendViewCallBack)
         }
     }
@@ -42,22 +41,38 @@ object RecommendPresenter : IRecommendPresenter {
      * 猜你喜欢
      */
     override fun getRecommendList() {
+        updateLoading()
         var map: HashMap<String, String> = HashMap()
         map.put(DTransferConstants.LIKE_COUNT, Constants.RECOMMAND_COUNT.toString())
+
         CommonRequest.getGuessLikeAlbum(map, object : IDataCallBack<GussLikeAlbumList> {
             override fun onSuccess(p0: GussLikeAlbumList?) {
                 if (p0 != null) {
                     var albumList = p0.albumList
                     if (albumList != null) {
                         handlerRecommendResult(albumList)
+                        Logutils.d(
+                            RecommendPresenter::class.java.toString(),
+                            "${p0.albumList.size}" + "个"
+                        )
                     }
                 }
             }
 
             override fun onError(p0: Int, p1: String?) {
-
+                handlerError()
             }
         })
+    }
+
+    private fun handlerError() {
+        if (mCallback != null) {
+            for (iRecommendViewCallBack in mCallback) {
+                iRecommendViewCallBack.onNetworkError()
+                break
+            }
+
+        }
     }
 
     override fun pullRefreshMore() {
@@ -69,10 +84,27 @@ object RecommendPresenter : IRecommendPresenter {
     }
 
     private fun handlerRecommendResult(albumList: List<Album>) {
-        if (mCallback!=null){
-            for (iRecommendViewCallBack in mCallback) {
-                iRecommendViewCallBack.onRecommendListLoaded(albumList)
+        if (albumList != null) {
+            if (albumList.isEmpty()) {
+                for (iRecommendViewCallBack in mCallback) {
+                    iRecommendViewCallBack.onEmpty()
+                    break
+                }
+            } else {
+                for (iRecommendViewCallBack in mCallback) {
+                    iRecommendViewCallBack.onRecommendListLoaded(albumList)
+                    break
+
+                }
             }
+        }
+
+    }
+
+    private fun updateLoading() {
+        for (iRecommendViewCallBack in mCallback) {
+            iRecommendViewCallBack.onLoading()
+            break
 
         }
     }
