@@ -6,16 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.DetailActivity
 import com.example.tingximalaya.R
 import com.example.tingximalaya.adapters.RecommendListAdapter
 import com.example.tingximalaya.base.BaseFragment
 import com.example.tingximalaya.interfaces.IRecommendViewCallBack
+import com.example.tingximalaya.presenters.AlbumDetailPresenter
 import com.example.tingximalaya.presenters.RecommendPresenter
-import com.example.tingximalaya.utils.Logutils
 import com.example.tingximalaya.views.UILoder
 import com.ximalaya.ting.android.opensdk.model.album.Album
 import kotlinx.android.synthetic.main.fragment_recommend.*
 import net.lucode.hackware.magicindicator.buildins.UIUtil
+import org.jetbrains.anko.support.v4.startActivity
 
 /**
  * @return:$
@@ -23,7 +25,8 @@ import net.lucode.hackware.magicindicator.buildins.UIUtil
  * @Author:cooek@moxfail.com$$
  * @Date: 2020/2/3$ 14:53$
  */
-class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetryClikListener {
+class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetryClikListener,
+    RecommendListAdapter.onReccommendItemClickListener {
 
 
     private var muiLoder: UILoder? = null
@@ -100,6 +103,9 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetr
         })
 
         recommend_list.adapter = mRecommendListAdapter
+        mRecommendListAdapter.ItemClickListenter(this)
+
+
     }
 
 
@@ -139,5 +145,12 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetr
             mRecommendPresenter.getRecommendList()
         }
     }
+
+    //点击事件
+    override fun onItemClick(postion: Int, album: Album) {
+        AlbumDetailPresenter.TarGetAlbum(album)
+        startActivity<DetailActivity>()
+    }
+
 
 }

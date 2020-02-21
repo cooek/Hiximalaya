@@ -14,7 +14,6 @@ import com.example.tingximalaya.base.BaseFragment
  */
 class HistoryFragment : BaseFragment() {
 
-
     override fun onSubViewLoad(layoutInflater: LayoutInflater, container: ViewGroup?): View? {
         return layoutInflater.inflate(R.layout.fragment_history, container,false)
     }

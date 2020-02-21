@@ -5,12 +5,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.example.tingximalaya.adapters.IndiocatorAdapter
 import com.example.tingximalaya.adapters.MainContentAdapter
-import com.example.tingximalaya.utils.Logutils
 import kotlinx.android.synthetic.main.activity_main.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.debug
 
 
 class MainActivity : FragmentActivity() ,AnkoLogger{
