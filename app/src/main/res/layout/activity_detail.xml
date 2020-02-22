@@ -1,19 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#0f0ff0">
+        android:layout_height="match_parent">
 
     <ImageView
             android:id="@+id/iv_large_cover"
             android:layout_width="match_parent"
-            android:scaleType="fitXY"
-            android:layout_height="150dp"></ImageView>
+            android:layout_height="150dp"
+            android:scaleType="fitXY"></ImageView>
+
+
+    <RelativeLayout
+            android:id="@+id/subscript_container"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/iv_large_cover"
+            android:background="@color/whiten">
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="75dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp"
+                android:elevation="8dp"
+                app:cardBackgroundColor="#F97254"
+                app:cardCornerRadius="18dp">
+            <TextView
+                    android:background="@drawable/shape_subject_bottom"
+                    android:layout_width="75dp"
+                    android:layout_height="35dp"
+                    android:gravity="center"
+                    android:text="+ 订阅">
+
+            </TextView>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/iv_play"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/subscript_container"
+            android:background="#EBE8E8">
+
+        <ImageView
+                android:id="@+id/detail_play_control"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/play_black_normal" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dp"
+                android:layout_toRightOf="@id/detail_play_control"
+                android:text="继续播放"
+                android:textSize="14sp" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@id/detail_arrow"
+                android:text="选集" />
+
+        <ImageView
+                android:id="@+id/detail_arrow"
+                android:layout_width="16dp"
+                android:layout_height="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="18dp"
+                android:src="@mipmap/arrow_icon" />
+    </RelativeLayout>
 
     <com.example.tingximalaya.views.RoundRectImageView
             android:id="@+id/iv_small_cover"
             android:layout_width="75dp"
             android:layout_height="75dp"
+            android:scaleType="fitXY"
             android:layout_below="@id/iv_large_cover"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="-40dp">
@@ -34,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="标题"
-                android:textColor="#ffffff"
+                android:textColor="@color/sub_text_title"
                 android:textSize="18sp" />
 
         <TextView
@@ -43,9 +116,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="作者"
-                android:textColor="#ffffff"
+                android:textColor="@color/sub_text_title"
                 android:textSize="12sp" />
     </LinearLayout>
+
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_below="@id/iv_play"
+            android:id="@+id/detaill_list_fragme"
+            android:layout_height="match_parent">
+
+
+    </FrameLayout>
+
 
 
 </RelativeLayout>

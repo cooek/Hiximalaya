@@ -1,10 +1,12 @@
 package com.example.tingximalaya.base
 
 import android.app.Application
+import android.content.Context
 import android.os.Handler
 import com.example.tingximalaya.utils.Logutils
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager
 
 
 /**
@@ -16,6 +18,8 @@ import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
 class BaseAplication : Application() {
 
     private var sHandler: Handler? = null
+
+    private val mcontext: Context by lazy { baseContext }
 
     override fun onCreate() {
         super.onCreate()
@@ -34,14 +38,28 @@ class BaseAplication : Application() {
                 mXimalaya.init(this, mAppSecret)
             }
         }
+        /**
+         * 初始化播放器
+         */
+        XmPlayerManager.getInstance(this).init()
 
         Logutils.init(this.packageName, false)
         sHandler = Handler()
 
+//        mcontext = baseContext
     }
 
     fun getHandler(): Handler? {
         return sHandler
+    }
+
+
+    /**
+     * 获取当前this
+     */
+    fun AppContext(): Context {
+        return mcontext
+
     }
 
 }

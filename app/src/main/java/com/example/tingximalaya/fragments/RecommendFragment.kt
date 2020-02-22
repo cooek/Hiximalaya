@@ -121,7 +121,7 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetr
     override fun onDestroyView() {
         super.onDestroyView()
 
-        mRecommendPresenter.unRegisterViewcallback(this)
+        mRecommendPresenter.unRegistViewCallBack(this)
 
     }
 

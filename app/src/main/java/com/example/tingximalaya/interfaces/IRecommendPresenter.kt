@@ -1,12 +1,14 @@
 package com.example.tingximalaya.interfaces
 
+import com.example.tingximalaya.base.IBasePresenter
+
 /**$
  * @return:$
  * @since: 1.0.0
  * @Author:cook@foxmail.com$
  * @Date: 2020/2/6$ 16:48$
  */
-interface IRecommendPresenter {
+interface IRecommendPresenter :IBasePresenter<IRecommendViewCallBack>{
     /**
      * 获取推荐内容
      */
@@ -24,16 +26,6 @@ interface IRecommendPresenter {
      */
     fun loadMore()
 
-    /**
-     * 回调接口引用
-     */
-    fun RegisterViewcallback(iRecommendViewCallBack:IRecommendViewCallBack)
-
-
-    /**
-     * 取消 制空引用
-     */
-    fun unRegisterViewcallback(iRecommendViewCallBack:IRecommendViewCallBack)
 
 
 }

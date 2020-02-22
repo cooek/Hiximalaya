@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+            android:id="@+id/teack_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="播放界面"
+            android:textSize="20sp" />
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/track_page_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/teack_title"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="100dp"
+            >
+
+
+    </androidx.viewpager.widget.ViewPager>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+
+                    android:id="@+id/current_postion"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textSize="12sp" />
+
+            <SeekBar
+                    android:id="@+id/track_seek_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp" />
+
+            <TextView
+                    android:id="@+id/track_duraction"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textSize="12sp" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:id="@+id/player_mode_switch_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="14dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/selector_palyer_mode_list_order" />
+
+            <ImageView
+                    android:id="@+id/player_pre"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/selector_palyer_pre"
+                    />
+
+            <ImageView
+                    android:id="@+id/player_or_pause_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/selector_palyer_play"
+                    />
+
+            <ImageView
+                    android:src="@drawable/selector_palyer_next"
+                    android:id="@+id/player_next"
+                    android:layout_width="0dp"
+                    android:layout_height="15dp"
+                    android:layout_weight="1"
+                    />
+
+            <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:src="@mipmap/player_icon_list_normal" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -63,6 +63,8 @@ abstract class UILoder : FrameLayout {
             mLoadingView = getLoadingView()
             addView(mLoadingView)
         }
+        println("测试！！！1")
+
         mLoadingView?.visibility = when (mCurrentStstus == UlStatus.LoADING) {
             true -> View.VISIBLE
             false -> View.GONE
@@ -86,6 +88,8 @@ abstract class UILoder : FrameLayout {
         if (mNetWorkError == null) {
             mNetWorkError = getNetWorkErrorView()
             addView(mNetWorkError)
+            println("测试！！！2")
+
         }
         mNetWorkError?.visibility =
             when (mCurrentStstus == UlStatus.NETWORK_ERROR) {

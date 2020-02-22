@@ -6,4 +6,8 @@
     <color name="mainbackcolor">#FA7254</color>
         <color name="recyclerbg">#fff4f4f4</color>
 
+    <color name="whiten">#FFFFFF</color>
+    <color name="sub_text_title">#979797</color>
+
+
 </resources>

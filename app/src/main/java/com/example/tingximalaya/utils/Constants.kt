@@ -15,6 +15,8 @@ object Constants {
 
 
     //获取推荐列表的专辑数量
-    val RECOMMAND_COUNT = 20
+    val RECOMMAND_COUNT = 50
+
+    val COUNT_RECOMMEDN = 50
 
 }

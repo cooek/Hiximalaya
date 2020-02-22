@@ -29,7 +29,7 @@ object RecommendPresenter : IRecommendPresenter {
         }
     }
 
-    override fun unRegisterViewcallback(iRecommendViewCallBack: IRecommendViewCallBack) {
+    override fun unRegistViewCallBack(iRecommendViewCallBack: IRecommendViewCallBack) {
         if (iRecommendViewCallBack != null) {
             mCallback.remove(iRecommendViewCallBack)
         }
@@ -69,7 +69,7 @@ object RecommendPresenter : IRecommendPresenter {
         if (mCallback != null) {
             for (iRecommendViewCallBack in mCallback) {
                 iRecommendViewCallBack.onNetworkError()
-                break
+
             }
 
         }
@@ -88,12 +88,10 @@ object RecommendPresenter : IRecommendPresenter {
             if (albumList.isEmpty()) {
                 for (iRecommendViewCallBack in mCallback) {
                     iRecommendViewCallBack.onEmpty()
-                    break
                 }
             } else {
                 for (iRecommendViewCallBack in mCallback) {
                     iRecommendViewCallBack.onRecommendListLoaded(albumList)
-                    break
 
                 }
             }
@@ -104,8 +102,6 @@ object RecommendPresenter : IRecommendPresenter {
     private fun updateLoading() {
         for (iRecommendViewCallBack in mCallback) {
             iRecommendViewCallBack.onLoading()
-            break
-
         }
     }
 

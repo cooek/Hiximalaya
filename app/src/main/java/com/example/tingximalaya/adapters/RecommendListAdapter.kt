@@ -41,6 +41,7 @@ class RecommendListAdapter : RecyclerView.Adapter<RecommendListAdapter.InnerHold
 
     class InnerHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+
         var album_cover: ImageView = itemView!!.findViewById(R.id.album_cover)
         var album_title_tv: TextView = itemView!!.findViewById(R.id.album_title_tv)
 

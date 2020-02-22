@@ -21,4 +21,11 @@ interface IAlbumDetailViewCallBack {
      * album
      */
     fun onAlbumLoaded(album: Album?)
+
+
+    /**
+     * 网络错误
+     */
+    fun onNetWorkError(errorcode: Int, errormsg: String?)
+
 }
