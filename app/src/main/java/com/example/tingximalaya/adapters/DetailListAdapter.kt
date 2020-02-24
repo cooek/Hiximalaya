@@ -81,7 +81,7 @@ class DetailListAdapter : RecyclerView.Adapter<DetailListAdapter.Innerholder>() 
             track: Track,
             position: Int
         ) {
-            ordertitle.text = position.toString()
+            ordertitle.text = (position+1).toString()
             detail_title.text = track.trackTitle
             detail_playcount.text = track.playCount.toString()
 

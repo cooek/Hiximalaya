@@ -44,7 +44,7 @@ abstract class UILoder : FrameLayout {
     }
 
     /**
-     * 主线程更新
+     * 更新
      */
     fun updateStatus(ststus: UlStatus) {
         this.mCurrentStstus = ststus

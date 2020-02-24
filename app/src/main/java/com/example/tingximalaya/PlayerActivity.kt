@@ -1,7 +1,9 @@
 package com.example.tingximalaya
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MotionEvent
 import android.widget.SeekBar
 import androidx.viewpager.widget.ViewPager
@@ -9,13 +11,13 @@ import com.example.tingximalaya.adapters.PlayerTrackPageAdapter
 import com.example.tingximalaya.base.BaseActivity
 import com.example.tingximalaya.interfaces.IPlayerCallBack
 import com.example.tingximalaya.presenters.PlayerPresenter
+import com.example.tingximalaya.views.SobPopWindow
 import com.ximalaya.ting.android.opensdk.model.track.Track
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl
 import kotlinx.android.synthetic.main.activity_pleyer.*
 import org.jetbrains.anko.runOnUiThread
 import org.jetbrains.anko.toast
 import java.text.SimpleDateFormat
-
 
 
 /**
@@ -28,6 +30,9 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
 
 
     private val mPlayerPresenter by lazy { PlayerPresenter }
+
+    private val mSobPopWindow by lazy { SobPopWindow(baseContext) }
+
     private val mPlayerTrackPageAdapter = PlayerTrackPageAdapter()
 
     private var mCurrentProgress: Int = 0
@@ -38,11 +43,18 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
 
     private var mIsUserSlidePager = false
 
-    private var sMap: MutableMap<XmPlayListControl.PlayMode, XmPlayListControl.PlayMode> = HashMap()
+    private var menterBgEnmation: ValueAnimator? = null
+
+    private var mouterBgEnmation: ValueAnimator? = null
+
+    private val BG_ANIMATION_DURATION: Long = 800
+
+    private var isOrder = false
 
     private val sPlayModeRule = HashMap<XmPlayListControl.PlayMode, XmPlayListControl.PlayMode>()
 
     private var mcurrentMode = XmPlayListControl.PlayMode.PLAY_MODEL_LIST
+
 
     private val mMinFormat = SimpleDateFormat("mm:ss")
 
@@ -54,30 +66,56 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
     //3、随机播放：PLAY_MODEL_RANDOM
     //4、单曲循环：PLAY_MODEL_SINGLE_LOOP
     init {
-        sPlayModeRule[XmPlayListControl.PlayMode.PLAY_MODEL_LIST] = XmPlayListControl.PlayMode. PLAY_MODEL_LIST_LOOP
-        sPlayModeRule[XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP] = XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM
-        sPlayModeRule[XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM] = XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP
-        sPlayModeRule[XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP] = XmPlayListControl.PlayMode.PLAY_MODEL_LIST
+        sPlayModeRule[XmPlayListControl.PlayMode.PLAY_MODEL_LIST] =
+            XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP
+        sPlayModeRule[XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP] =
+            XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM
+        sPlayModeRule[XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM] =
+            XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP
+        sPlayModeRule[XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP] =
+            XmPlayListControl.PlayMode.PLAY_MODEL_LIST
+
+
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pleyer)
         mviewPages = findViewById(R.id.track_page_view)
-        initEvent()
+        mPlayerPresenter.getcontext(baseContext)
         mPlayerPresenter.RegisterViewcallback(this)
         mPlayerPresenter.PlayList()
-
+        initEvent()
+        initBgAnimation()
         mviewPages?.adapter = mPlayerTrackPageAdapter
 
+
+    }
+
+    private fun initBgAnimation() {
+        menterBgEnmation = ValueAnimator.ofFloat(1.0f, 0.7f)
+        menterBgEnmation?.duration = BG_ANIMATION_DURATION
+
+        menterBgEnmation?.addUpdateListener {
+            var antmateValue = it?.animatedValue as Float
+            updateBgAlpha(antmateValue)
+        }
+        mouterBgEnmation = ValueAnimator.ofFloat(0.7f, 1.0f)
+        mouterBgEnmation?.duration = BG_ANIMATION_DURATION
+        mouterBgEnmation?.addUpdateListener {
+            var antmateValue = it?.animatedValue as Float
+            updateBgAlpha(antmateValue)
+        }
 
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initEvent() {
 
+
         player_or_pause_btn.setOnClickListener {
 
-            if (mPlayerPresenter.isPlay()) {
+            if (mPlayerPresenter.isPlaying()) {
                 mPlayerPresenter.pause()
             } else {
                 mPlayerPresenter.play()
@@ -118,14 +156,11 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
         //上一首
         player_pre.setOnClickListener {
             mIsUserSlidePager = false
-
             mPlayerPresenter.playPre()
 
         }
 
         //适配器
-
-
         /**
          * viewpage listenter
          */
@@ -154,7 +189,7 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
 
                 }
             })
-            mviewPages?.setOnTouchListener { p0, p1 ->
+            mviewPages?.setOnTouchListener { _, p1 ->
                 when (p1?.action) {
                     MotionEvent.ACTION_DOWN -> {
                         mIsUserSlidePager = true
@@ -166,19 +201,51 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
         }
 
         player_mode_switch_btn.setOnClickListener {
-            var playMode = sPlayModeRule[mcurrentMode]
-            if (playMode != null) {
-                mPlayerPresenter.switchPlayMode(playMode!!)
-                mcurrentMode = playMode!!
-                updatePlayMode()
+            switchPlayMode()
+
+        }
+        player_list.setOnClickListener {
+            mSobPopWindow.showAtLocation(it, Gravity.BOTTOM, 0, 0)
+            if (menterBgEnmation != null) {
+                menterBgEnmation?.start()
+
+            }
+        }
+
+        mSobPopWindow.setOnDismissListener {
+            mouterBgEnmation?.start()
+        }
+
+        mSobPopWindow.setPlayListItemClickListenter(object :
+            SobPopWindow.PlayListItemClickListenter {
+            override fun onItemClick(position: Int) {
+                mPlayerPresenter.playByIndex(position)
+            }
+        })
+
+        //模式回调
+        mSobPopWindow.setPlayListPlayModeClickListenter(object :
+            SobPopWindow.PlayListPlayActionClickListenter {
+            override fun onOrderClick() {
+                mPlayerPresenter.reversePlayList()
 
             }
 
-        }
-
+            override fun onPlayModeClick() {
+                switchPlayMode()
+            }
+        })
 
     }
 
+    private fun switchPlayMode() {
+        var playMode = sPlayModeRule[mcurrentMode]
+        if (playMode != null) {
+            mPlayerPresenter.switchPlayMode(playMode)
+        }
+    }
+
+    //Toast
     fun MyToas(msg: String) {
         baseContext.runOnUiThread {
             toast(msg)
@@ -203,11 +270,12 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
                 MyToas("循环模式")
 
             }
-            XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE -> {
+            XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP -> {
                 resId = R.drawable.selector_palyer_mode_single_loop
                 MyToas("单曲模式")
 
             }
+
         }
         player_mode_switch_btn.setImageResource(resId)
 
@@ -217,8 +285,16 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
     //标题
     override fun onTrackUpdate(track: Track, playindex: Int) {
 
+        if (track!=null) {
+            return
+        }
         teack_title.text = track.trackTitle
+
         mviewPages?.setCurrentItem(playindex, true)
+
+        mSobPopWindow.setCureentPlayPosition(playindex)
+
+        player_or_pause_btn.setImageResource(R.drawable.selector_palyer_stop)
 
 
     }
@@ -226,7 +302,7 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
 
     /**
      * mPlayerPresenter 回调接口
-     */
+      */
     override fun onPlayStart() {
         //开始播放
         player_or_pause_btn.setImageResource(R.drawable.selector_palyer_stop)
@@ -256,20 +332,22 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
     }
 
     override fun onListLoaded(list: List<Track>) {
-
         mPlayerTrackPageAdapter.setData(list)
-
+        mSobPopWindow.setListDate(list)
     }
 
     override fun onPlayModeChange(mode: XmPlayListControl.PlayMode) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mcurrentMode = mode
+        mSobPopWindow.updataMode(mcurrentMode)
+        updatePlayMode()
+
     }
 
     //进度回调
     override fun onProgressChange(currentProgress: Int, long: Int) {
         track_seek_bar.max = long
-        var totalDuration: String? = null
-        var currentDuration: String? = null
+        var totalDuration: String?
+        var currentDuration: String?
 
         if (long > 1000 * 60 * 60) {
             totalDuration = mHourFormat.format(long)
@@ -302,7 +380,21 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
 
     override fun onDestroy() {
         super.onDestroy()
-        mPlayerPresenter?.unRegistViewCallBack(this)
+        mPlayerPresenter.unRegistViewCallBack(this)
+    }
+
+    //背景颜色
+
+    fun updateBgAlpha(alpha: Float) {
+        var window = window
+        var attributes = window.attributes
+        attributes.alpha = alpha
+        window.attributes = attributes
+    }
+
+    override fun updateListOrder(isReverse: Boolean) {
+
+        mSobPopWindow.updateOrderIcon(isReverse)
     }
 
 

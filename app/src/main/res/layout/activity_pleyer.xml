@@ -22,8 +22,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/teack_title"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="100dp"
-            >
+            android:layout_marginBottom="100dp">
 
 
     </androidx.viewpager.widget.ViewPager>
@@ -92,30 +91,28 @@
                     android:layout_width="0dp"
                     android:layout_height="20dp"
                     android:layout_weight="1"
-                    android:src="@drawable/selector_palyer_pre"
-                    />
+                    android:src="@drawable/selector_palyer_pre" />
 
             <ImageView
                     android:id="@+id/player_or_pause_btn"
                     android:layout_width="0dp"
                     android:layout_height="35dp"
                     android:layout_weight="1"
-                    android:src="@drawable/selector_palyer_play"
-                    />
+                    android:src="@drawable/selector_palyer_play" />
 
             <ImageView
-                    android:src="@drawable/selector_palyer_next"
                     android:id="@+id/player_next"
                     android:layout_width="0dp"
                     android:layout_height="15dp"
                     android:layout_weight="1"
-                    />
+                    android:src="@drawable/selector_palyer_next" />
 
             <ImageView
+                    android:id="@+id/player_list"
                     android:layout_width="0dp"
-                    android:layout_height="20dp"
+                    android:layout_height="14dp"
                     android:layout_weight="1"
-                    android:src="@mipmap/player_icon_list_normal" />
+                    android:src="@drawable/selector_palyer_list" />
 
         </LinearLayout>
     </LinearLayout>

@@ -27,10 +27,11 @@
                 android:elevation="8dp"
                 app:cardBackgroundColor="#F97254"
                 app:cardCornerRadius="18dp">
+
             <TextView
-                    android:background="@drawable/shape_subject_bottom"
                     android:layout_width="75dp"
                     android:layout_height="35dp"
+                    android:background="@drawable/shape_subject_bottom"
                     android:gravity="center"
                     android:text="+ 订阅">
 
@@ -49,18 +50,27 @@
 
         <ImageView
                 android:id="@+id/detail_play_control"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
+                android:layout_width="39dp"
+                android:layout_height="39dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="2dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="10dp"
                 android:src="@mipmap/play_black_normal" />
 
         <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/paly_control_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
+                android:layout_marginRight="140dp"
                 android:layout_toRightOf="@id/detail_play_control"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
                 android:text="继续播放"
                 android:textSize="14sp" />
 
@@ -86,10 +96,10 @@
             android:id="@+id/iv_small_cover"
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:scaleType="fitXY"
             android:layout_below="@id/iv_large_cover"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="-40dp">
+            android:layout_marginTop="-40dp"
+            android:scaleType="fitXY">
 
     </com.example.tingximalaya.views.RoundRectImageView>
 
@@ -122,14 +132,13 @@
 
 
     <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_below="@id/iv_play"
             android:id="@+id/detaill_list_fragme"
-            android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/iv_play">
 
 
     </FrameLayout>
-
 
 
 </RelativeLayout>

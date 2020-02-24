@@ -1,5 +1,7 @@
 package com.example.tingximalaya.base
 
+import android.content.Context
+
 /**$
  * @return:$
  * @since: 1.0.0
@@ -17,6 +19,6 @@ interface IBasePresenter<T> {
     /**
      * 注册
      */
-    fun RegisterViewcallback(t:T)
+    fun RegisterViewcallback(t: T)
 
 }

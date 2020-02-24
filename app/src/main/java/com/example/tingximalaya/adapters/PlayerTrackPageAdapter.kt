@@ -48,7 +48,6 @@ class PlayerTrackPageAdapter : PagerAdapter() {
         var imageview = view.findViewById<ImageView>(R.id.track_Pager_item)
         var imgurl = mdata[position].coverUrlLarge
         if (imgurl != null) {
-//            Picasso.with(container.context).load(imgurl).into(imageview)
             Glide.with(container.context)
                 .load(imgurl).placeholder(R.mipmap.timg)
                 .into(imageview)
@@ -61,4 +60,6 @@ class PlayerTrackPageAdapter : PagerAdapter() {
         container.removeView(view)
 
     }
+
+
 }

@@ -14,7 +14,7 @@ interface IAlbumDetailViewCallBack {
     /**
      * 专辑详情内容
      */
-    fun onDetailListLoaded(tacks:List<Track>)
+    fun onDetailListLoaded(tacks: List<Track>)
 
 
     /**
@@ -27,5 +27,14 @@ interface IAlbumDetailViewCallBack {
      * 网络错误
      */
     fun onNetWorkError(errorcode: Int, errormsg: String?)
+
+
+    /**
+     * true
+     */
+    fun onLoadeMoreFinished(size: Int)
+
+
+    fun onRefreshFinished(size: Int)
 
 }

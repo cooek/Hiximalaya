@@ -83,5 +83,8 @@ interface IPlayerCallBack {
      * 标题
      */
     fun onTrackUpdate(track:Track,playindex :Int)
+
+    fun updateListOrder(isReverse: Boolean)
+
 }
 

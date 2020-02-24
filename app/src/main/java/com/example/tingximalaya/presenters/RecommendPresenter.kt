@@ -1,5 +1,7 @@
 package com.example.tingximalaya.presenters
 
+import android.content.Context
+import com.example.tingximalaya.api.XimaLayApi
 import com.example.tingximalaya.interfaces.IRecommendPresenter
 import com.example.tingximalaya.interfaces.IRecommendViewCallBack
 import com.example.tingximalaya.utils.Constants
@@ -19,11 +21,16 @@ import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList
 object RecommendPresenter : IRecommendPresenter {
 
 
+    private var mCurrentRecommedTrack: List<Album>? = null
+
+
     private var mCallback: ArrayList<IRecommendViewCallBack> = ArrayList()
     /**
      * 注册到list
      */
-    override fun RegisterViewcallback(iRecommendViewCallBack: IRecommendViewCallBack) {
+    override fun RegisterViewcallback(
+        iRecommendViewCallBack: IRecommendViewCallBack
+    ) {
         if (mCallback != null && !mCallback.contains(iRecommendViewCallBack)) {
             mCallback.add(iRecommendViewCallBack)
         }
@@ -42,10 +49,7 @@ object RecommendPresenter : IRecommendPresenter {
      */
     override fun getRecommendList() {
         updateLoading()
-        var map: HashMap<String, String> = HashMap()
-        map.put(DTransferConstants.LIKE_COUNT, Constants.RECOMMAND_COUNT.toString())
-
-        CommonRequest.getGuessLikeAlbum(map, object : IDataCallBack<GussLikeAlbumList> {
+        XimaLayApi.getRecommenList(object : IDataCallBack<GussLikeAlbumList> {
             override fun onSuccess(p0: GussLikeAlbumList?) {
                 if (p0 != null) {
                     var albumList = p0.albumList
@@ -92,8 +96,8 @@ object RecommendPresenter : IRecommendPresenter {
             } else {
                 for (iRecommendViewCallBack in mCallback) {
                     iRecommendViewCallBack.onRecommendListLoaded(albumList)
-
                 }
+                this.mCurrentRecommedTrack = albumList
             }
         }
 
@@ -103,6 +107,10 @@ object RecommendPresenter : IRecommendPresenter {
         for (iRecommendViewCallBack in mCallback) {
             iRecommendViewCallBack.onLoading()
         }
+    }
+
+    fun CurrentTrack(): List<Album>?{
+        return mCurrentRecommedTrack
     }
 
 }

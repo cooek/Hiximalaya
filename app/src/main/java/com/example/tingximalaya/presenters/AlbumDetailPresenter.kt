@@ -1,9 +1,10 @@
 package com.example.tingximalaya.presenters
 
+import android.content.Context
+import com.example.tingximalaya.api.XimaLayApi
 import com.example.tingximalaya.interfaces.IAlbumDetailPresenter
 import com.example.tingximalaya.interfaces.IAlbumDetailViewCallBack
 import com.example.tingximalaya.utils.Constants
-import com.example.tingximalaya.utils.Logutils
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack
@@ -19,11 +20,19 @@ import com.ximalaya.ting.android.opensdk.model.track.TrackList
  */
 object AlbumDetailPresenter : IAlbumDetailPresenter {
 
+    private var mCurrentPageIndex: Int = 0
+    private var mCurrentAlbumId: Int = -1
+
     private var mtatgetAlbum: Album? = null
 
     private var mCallback: ArrayList<IAlbumDetailViewCallBack> = ArrayList()
 
-    override fun RegisterViewcallback(ialbumDetailViewCallBack: IAlbumDetailViewCallBack) {
+    private var mTrack: ArrayList<Track> = ArrayList()
+
+
+    override fun RegisterViewcallback(
+        ialbumDetailViewCallBack: IAlbumDetailViewCallBack
+    ) {
         if (!mCallback.contains(ialbumDetailViewCallBack)) {
             mCallback.add(ialbumDetailViewCallBack)
             if (mtatgetAlbum != null) {
@@ -43,40 +52,60 @@ object AlbumDetailPresenter : IAlbumDetailPresenter {
     }
 
     override fun loadMore() {
+        mCurrentPageIndex++
+        thatdoLoad(true)
+    }
+
+
+    fun thatdoLoad(isLoadMore: Boolean) {
+        XimaLayApi.getAlbumDetail(object : IDataCallBack<TrackList> {
+            override fun onSuccess(p0: TrackList?) {
+                if (p0 != null) {
+                    var tracks = p0.tracks
+                    if (isLoadMore) {
+                        mTrack.addAll(tracks)
+                        var size = tracks.size
+                        handleLoaderMoreResult(size)
+                    } else {
+                        mTrack.addAll(0, tracks)
+                    }
+                    handlerAlbumDetailResult(mTrack)
+                }
+            }
+
+
+            override fun onError(p0: Int, p1: String?) {
+                if (isLoadMore) {
+                    mCurrentPageIndex--
+
+                }
+                hanlerError(p0, p1)
+            }
+
+
+        }, mCurrentAlbumId, mCurrentPageIndex)
+    }
+
+    private fun handleLoaderMoreResult(size: Int) {
+
+        for (iAlbumDetailViewCallBack in mCallback) {
+            iAlbumDetailViewCallBack.onLoadeMoreFinished(size)
+        }
+
 
     }
 
     override fun AlbumDetail(albumId: Int, Page: Int?) {
+        mTrack.clear()
+        this.mCurrentAlbumId = albumId
+        this.mCurrentPageIndex = Page!!
+        thatdoLoad(false)
 
-        var map = HashMap<String, String>()
-        map.put(DTransferConstants.ALBUM_ID, albumId.toString())
-        map.put(DTransferConstants.SORT, "asc")
-        map.put(DTransferConstants.PAGE, Page.toString())
-        map.put(DTransferConstants.PAGE_SIZE, Constants.RECOMMAND_COUNT.toString())
-        CommonRequest.getTracks(map, object : IDataCallBack<TrackList> {
-            override fun onSuccess(p0: TrackList?) {
-                if (p0 != null) {
-                    var tracks = p0.tracks
-                    handlerAlbumDetailResult(tracks)
-
-                    println("111111111111111111->>>>${tracks.size}")
-
-
-                }
-            }
-
-            override fun onError(p0: Int, p1: String?) {
-                hanlerError(p0,p1)
-
-            }
-
-
-        })
     }
 
     private fun hanlerError(p0: Int, p1: String?) {
         for (iAlbumDetailViewCallBack in mCallback) {
-            iAlbumDetailViewCallBack.onNetWorkError(p0,p1)
+            iAlbumDetailViewCallBack.onNetWorkError(p0, p1)
 
         }
     }

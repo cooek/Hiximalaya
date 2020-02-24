@@ -67,7 +67,16 @@ interface lPlayerPresenter : IBasePresenter<IPlayerCallBack> {
      *是否播放
      */
 
-    fun isPlay(): Boolean
+    fun isPlaying(): Boolean
+
+
+    /**
+     * 反转
+     */
+    fun reversePlayList()
+
+
+    fun playByAlbum(id: Long)
 
 
 }
