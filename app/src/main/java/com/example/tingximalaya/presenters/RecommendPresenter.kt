@@ -1,13 +1,9 @@
 package com.example.tingximalaya.presenters
 
-import android.content.Context
-import com.example.tingximalaya.api.XimaLayApi
+import com.example.tingximalaya.data.XimaLayApi
 import com.example.tingximalaya.interfaces.IRecommendPresenter
 import com.example.tingximalaya.interfaces.IRecommendViewCallBack
-import com.example.tingximalaya.utils.Constants
 import com.example.tingximalaya.utils.Logutils
-import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
-import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack
 import com.ximalaya.ting.android.opensdk.model.album.Album
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList
@@ -29,17 +25,15 @@ object RecommendPresenter : IRecommendPresenter {
      * 注册到list
      */
     override fun RegisterViewcallback(
-        iRecommendViewCallBack: IRecommendViewCallBack
+        t: IRecommendViewCallBack
     ) {
-        if (mCallback != null && !mCallback.contains(iRecommendViewCallBack)) {
-            mCallback.add(iRecommendViewCallBack)
+        if (!mCallback.contains(t)) {
+            mCallback.add(t)
         }
     }
 
-    override fun unRegistViewCallBack(iRecommendViewCallBack: IRecommendViewCallBack) {
-        if (iRecommendViewCallBack != null) {
-            mCallback.remove(iRecommendViewCallBack)
-        }
+    override fun unRegistViewCallBack(t: IRecommendViewCallBack) {
+        mCallback.remove(t)
 
     }
 
@@ -70,11 +64,8 @@ object RecommendPresenter : IRecommendPresenter {
     }
 
     private fun handlerError() {
-        if (mCallback != null) {
-            for (iRecommendViewCallBack in mCallback) {
-                iRecommendViewCallBack.onNetworkError()
-
-            }
+        for (iRecommendViewCallBack in mCallback) {
+            iRecommendViewCallBack.onNetworkError()
 
         }
     }
@@ -88,17 +79,15 @@ object RecommendPresenter : IRecommendPresenter {
     }
 
     private fun handlerRecommendResult(albumList: List<Album>) {
-        if (albumList != null) {
-            if (albumList.isEmpty()) {
-                for (iRecommendViewCallBack in mCallback) {
-                    iRecommendViewCallBack.onEmpty()
-                }
-            } else {
-                for (iRecommendViewCallBack in mCallback) {
-                    iRecommendViewCallBack.onRecommendListLoaded(albumList)
-                }
-                this.mCurrentRecommedTrack = albumList
+        if (albumList.isEmpty()) {
+            for (iRecommendViewCallBack in mCallback) {
+                iRecommendViewCallBack.onEmpty()
             }
+        } else {
+            for (iRecommendViewCallBack in mCallback) {
+                iRecommendViewCallBack.onRecommendListLoaded(albumList)
+            }
+            this.mCurrentRecommedTrack = albumList
         }
 
     }

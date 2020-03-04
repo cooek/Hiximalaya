@@ -36,10 +36,7 @@ class IndiocatorAdapter(context: Context?) : CommonNavigatorAdapter() {
         simplePagerTitleView.selectedColor = Color.WHITE
         simplePagerTitleView.text = list?.get(index)
         simplePagerTitleView.setOnClickListener {
-            if(onIndicatorTapClickListeners!=null){
-                onIndicatorTapClickListeners.onTabClick(index)
-
-            }
+            onIndicatorTapClickListeners.onTabClick(index)
 
         }
         return simplePagerTitleView

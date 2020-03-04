@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/whiten"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+        <ImageView
+                android:id="@+id/search_backcall"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/selector_search_bt" />
+
+        <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15sp"
+                android:layout_weight="1">
+
+            <EditText
+                    android:id="@+id/search_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:background="@drawable/shape_edit_text_bg"
+                    android:hint="请输入专辑关键字"
+                    android:paddingLeft="5dp"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@drawable/shape_edit_text_cursor"
+                    android:textSize="16sp" />
+
+            <ImageView
+                    android:id="@+id/search_input_delete"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15sp"
+                    android:src="@mipmap/input_delete_icon" />
+
+        </RelativeLayout>
+
+
+        <TextView
+                android:id="@+id/search_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="搜索"
+
+                android:textColor="@color/mainbackcolor"
+                android:textSize="15sp" />
+
+    </LinearLayout>
+
+
+    <FrameLayout
+            android:id="@+id/search_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+</LinearLayout>

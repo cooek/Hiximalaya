@@ -3,7 +3,7 @@ package com.example.tingximalaya.presenters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.tingximalaya.api.XimaLayApi
+import com.example.tingximalaya.data.XimaLayApi
 import com.example.tingximalaya.base.BaseAplication
 import com.example.tingximalaya.interfaces.IPlayerCallBack
 import com.example.tingximalaya.interfaces.lPlayerPresenter
@@ -123,17 +123,14 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
     }
 
     override fun switchPlayMode(mode: XmPlayListControl.PlayMode) {
-        if (mode != null) {
-            mXlayerManager.playMode = mode
-            mcurrentMode = mode
-            for (iPlayerCallBack in mCallback) {
-                iPlayerCallBack.onPlayModeChange(mode)
-            }
-            var edit = playModeSP?.edit()
-            edit?.putInt(PLAY_MODE_SP_KEY, getIntByPlayMode(mode))
-            edit?.commit()
-
+        mXlayerManager.playMode = mode
+        mcurrentMode = mode
+        for (iPlayerCallBack in mCallback) {
+            iPlayerCallBack.onPlayModeChange(mode)
         }
+        var edit = playModeSP?.edit()
+        edit?.putInt(PLAY_MODE_SP_KEY, getIntByPlayMode(mode))
+        edit?.commit()
 
 
     }

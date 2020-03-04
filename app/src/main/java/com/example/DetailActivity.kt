@@ -14,8 +14,10 @@ import com.example.tingximalaya.adapters.DetailListAdapter
 import com.example.tingximalaya.base.BaseActivity
 import com.example.tingximalaya.interfaces.IAlbumDetailViewCallBack
 import com.example.tingximalaya.interfaces.IPlayerCallBack
+import com.example.tingximalaya.interfaces.ISubscriptCallBack
 import com.example.tingximalaya.presenters.AlbumDetailPresenter
 import com.example.tingximalaya.presenters.PlayerPresenter
+import com.example.tingximalaya.presenters.SubscriptionPresenter
 import com.example.tingximalaya.utils.ImageBlur
 import com.example.tingximalaya.views.UILoder
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
@@ -40,9 +42,10 @@ import org.jetbrains.anko.toast
  * @Date: 2020/2/21$ 9:14$
  */
 class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetryClikListener,
-    DetailListAdapter.ItemCilckListener, IPlayerCallBack {
+    DetailListAdapter.ItemCilckListener, IPlayerCallBack, ISubscriptCallBack {
 
 
+    private var mCurrentAlbum: Album? = null
     private var mTrackTitle: String? = null
     private var mCurrentPage = 1
 
@@ -58,6 +61,9 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
     private var mdetailListAdapter: DetailListAdapter? = null
 
     private val mPlayerPresenter by lazy { PlayerPresenter }
+
+    private val mSubscriptionPresenter = SubscriptionPresenter
+
     private var muiLoader: UILoder? = null
 
     private var mLlinearLayoutManager: LinearLayoutManager? = null
@@ -72,8 +78,10 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
         setContentView(R.layout.activity_detail)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
         window.statusBarColor = Color.TRANSPARENT
-        mAlbumDetailPresenter.RegisterViewcallback(this)
-        mPlayerPresenter.RegisterViewcallback(this)
+        mSubscriptionPresenter.GetContext(this)
+        mSubscriptionPresenter.getSubScriptionList()
+        initPresenter()
+        updatestate()
         updatdePlaySate(mPlayerPresenter.isPlaying())
         if (muiLoader == null) {
             muiLoader = object : UILoder(this) {
@@ -89,7 +97,29 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
         }
         initEistener()
 
+    }
 
+    private fun updatestate() {
+        if (mCurrentAlbum != null) {
+            var isSub = mSubscriptionPresenter.isSub(mCurrentAlbum!!)
+            detail_sub_btn.text = when (!isSub) {
+                true -> {
+                    "+ 订阅"
+                }
+                false -> {
+                    "取消订阅"
+                }
+
+            }
+
+        }
+
+    }
+
+    private fun initPresenter() {
+        mAlbumDetailPresenter.RegisterViewcallback(this)
+        mPlayerPresenter.RegisterViewcallback(this)
+        mSubscriptionPresenter.RegisterViewcallback(this)
     }
 
 
@@ -107,6 +137,19 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
             }
 
         }
+
+        detail_sub_btn.setOnClickListener {
+            if (mCurrentAlbum != null) {
+                var issub = mSubscriptionPresenter.isSub(mCurrentAlbum!!)
+                if (issub) {
+                    mSubscriptionPresenter.deleteSubscription(mCurrentAlbum!!)
+                } else {
+                    mSubscriptionPresenter.addSubScription(mCurrentAlbum!!)
+                }
+
+            }
+        }
+
     }
 
     private fun handleNoPlayList() {
@@ -204,10 +247,10 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
      * 加载UI
      */
     override fun onAlbumLoaded(album: Album?) {
-
+        this.mCurrentAlbum = album
         var id = album?.id?.toInt()
         mCurrentId = id!!
-        mAlbumDetailPresenter.AlbumDetail(id!!, mCurrentPage)
+        mAlbumDetailPresenter.AlbumDetail(id, mCurrentPage)
         if (muiLoader != null) {
             muiLoader?.updateStatus(UILoder.UlStatus.LoADING)
         }
@@ -238,7 +281,7 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
 
     //点击重试
     override fun onRetryClick() {
-        mAlbumDetailPresenter.AlbumDetail(mCurrentId!!, mCurrentPage)
+        mAlbumDetailPresenter.AlbumDetail(mCurrentId, mCurrentPage)
 
     }
 
@@ -318,7 +361,7 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
 
     override fun updateListOrder(isReverse: Boolean) {
     }
-    //end
+//end
 
     override fun onLoadeMoreFinished(size: Int) {
         if (size > 0) {
@@ -339,7 +382,29 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
 
     override fun onDestroy() {
         super.onDestroy()
+        mAlbumDetailPresenter.unRegistViewCallBack(this)
         mPlayerPresenter.unRegistViewCallBack(this)
+        mSubscriptionPresenter.unRegistViewCallBack(this)
+    }
+
+
+    //sub
+    override fun onAddResult(isSuccess: Boolean) {
+
+        if (isSuccess) {
+            detail_sub_btn.text = "取消订阅"
+        }
+
+    }
+
+    override fun onDeleteResult(isSuccess: Boolean) {
+        if (isSuccess) {
+            detail_sub_btn.text = "+ 订阅"
+        }
+    }
+
+    override fun onSubScriptionLoaded(album: List<Album>) {
+
     }
 
 

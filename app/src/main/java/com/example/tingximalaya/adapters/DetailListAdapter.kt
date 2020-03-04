@@ -35,10 +35,7 @@ class DetailListAdapter : RecyclerView.Adapter<DetailListAdapter.Innerholder>() 
 
     override fun getItemCount(): Int {
 
-        if (mDetailList != null) {
-            return mDetailList.size
-        }
-        return 0
+        return mDetailList.size
     }
 
     override fun onBindViewHolder(holder: Innerholder, position: Int) {
@@ -57,12 +54,9 @@ class DetailListAdapter : RecyclerView.Adapter<DetailListAdapter.Innerholder>() 
 
 
     fun setData(tacks: List<Track>) {
-        if (tacks != null) {
-            mDetailList.clear()
-            mDetailList.addAll(tacks)
-            notifyDataSetChanged()
-
-        }
+        mDetailList.clear()
+        mDetailList.addAll(tacks)
+        notifyDataSetChanged()
 
 
     }

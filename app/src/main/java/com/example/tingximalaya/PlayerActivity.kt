@@ -285,16 +285,14 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
     //标题
     override fun onTrackUpdate(track: Track, playindex: Int) {
 
-        if (track!=null) {
-            return
-        }
         teack_title.text = track.trackTitle
+
 
         mviewPages?.setCurrentItem(playindex, true)
 
         mSobPopWindow.setCureentPlayPosition(playindex)
 
-        player_or_pause_btn.setImageResource(R.drawable.selector_palyer_stop)
+//        player_or_pause_btn.setImageResource(R.drawable.selector_palyer_stop)
 
 
     }

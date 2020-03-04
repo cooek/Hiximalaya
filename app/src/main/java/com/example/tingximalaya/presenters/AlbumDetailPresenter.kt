@@ -1,12 +1,8 @@
 package com.example.tingximalaya.presenters
 
-import android.content.Context
-import com.example.tingximalaya.api.XimaLayApi
+import com.example.tingximalaya.data.XimaLayApi
 import com.example.tingximalaya.interfaces.IAlbumDetailPresenter
 import com.example.tingximalaya.interfaces.IAlbumDetailViewCallBack
-import com.example.tingximalaya.utils.Constants
-import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
-import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack
 import com.ximalaya.ting.android.opensdk.model.album.Album
 import com.ximalaya.ting.android.opensdk.model.track.Track
@@ -31,18 +27,18 @@ object AlbumDetailPresenter : IAlbumDetailPresenter {
 
 
     override fun RegisterViewcallback(
-        ialbumDetailViewCallBack: IAlbumDetailViewCallBack
+        t: IAlbumDetailViewCallBack
     ) {
-        if (!mCallback.contains(ialbumDetailViewCallBack)) {
-            mCallback.add(ialbumDetailViewCallBack)
+        if (!mCallback.contains(t)) {
+            mCallback.add(t)
             if (mtatgetAlbum != null) {
-                ialbumDetailViewCallBack.onAlbumLoaded(mtatgetAlbum)
+                t.onAlbumLoaded(mtatgetAlbum)
             }
         }
     }
 
-    override fun unRegistViewCallBack(ialbumDetailViewCallBack: IAlbumDetailViewCallBack) {
-        mCallback.remove(ialbumDetailViewCallBack)
+    override fun unRegistViewCallBack(t: IAlbumDetailViewCallBack) {
+        mCallback.remove(t)
     }
 
 

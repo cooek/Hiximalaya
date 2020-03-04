@@ -77,6 +77,13 @@ class MainActivity : FragmentActivity(), AnkoLogger, IPlayerCallBack {
         }
 
 
+        search_btn.setOnClickListener {
+            startActivity<SearchActivity>()
+
+
+        }
+
+
     }
 
     /**
@@ -86,7 +93,7 @@ class MainActivity : FragmentActivity(), AnkoLogger, IPlayerCallBack {
         var mCurrenttTrack = RecommendPresenter.CurrentTrack()
         if (mCurrenttTrack != null) {
             var album = mCurrenttTrack[0]
-            var albumid = album.id.toLong()
+            var albumid = album.id
             mPlayerPresenter.playByAlbum(albumid)
 
         }
@@ -156,6 +163,8 @@ class MainActivity : FragmentActivity(), AnkoLogger, IPlayerCallBack {
     }
 
     override fun onListLoaded(list: List<Track>) {
+
+
     }
 
     override fun onPlayModeChange(mode: XmPlayListControl.PlayMode) {

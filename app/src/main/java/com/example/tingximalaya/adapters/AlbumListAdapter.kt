@@ -19,7 +19,7 @@ import com.ximalaya.ting.android.opensdk.model.album.Album
  * @Author:cooek@foxmail.com$
  * @Date: 2020/2/4$ 16:45$
  */
-class RecommendListAdapter : RecyclerView.Adapter<RecommendListAdapter.InnerHolder>() {
+class AlbumListAdapter : RecyclerView.Adapter<AlbumListAdapter.InnerHolder>() {
 
 
     private var monReccommendItemClickListener: onReccommendItemClickListener? = null
@@ -28,7 +28,7 @@ class RecommendListAdapter : RecyclerView.Adapter<RecommendListAdapter.InnerHold
         holder.itemView.tag = position
         holder.itemView.setOnClickListener {
             if (monReccommendItemClickListener != null) {
-                monReccommendItemClickListener?.onItemClick(it.tag as Int,mdata[position])
+                monReccommendItemClickListener?.onItemClick(it.tag as Int, mdata[position])
             }
         }
         holder.setdata(mdata[position])
@@ -42,12 +42,12 @@ class RecommendListAdapter : RecyclerView.Adapter<RecommendListAdapter.InnerHold
     class InnerHolder(view: View) : RecyclerView.ViewHolder(view) {
 
 
-        var album_cover: ImageView = itemView!!.findViewById(R.id.album_cover)
-        var album_title_tv: TextView = itemView!!.findViewById(R.id.album_title_tv)
+        var album_cover: ImageView = itemView.findViewById(R.id.album_cover)
+        var album_title_tv: TextView = itemView.findViewById(R.id.album_title_tv)
 
-        var album_descripton: TextView = itemView!!.findViewById(R.id.album_descripton_tv)
-        var album_play_count: TextView = itemView!!.findViewById(R.id.album_play_count)
-        var album_content_size: TextView = itemView!!.findViewById(R.id.album_content_size)
+        var album_descripton: TextView = itemView.findViewById(R.id.album_descripton_tv)
+        var album_play_count: TextView = itemView.findViewById(R.id.album_play_count)
+        var album_content_size: TextView = itemView.findViewById(R.id.album_content_size)
 
         fun setdata(album: Album) {
             album_title_tv.text = album.albumTitle
@@ -63,7 +63,7 @@ class RecommendListAdapter : RecyclerView.Adapter<RecommendListAdapter.InnerHold
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecommendListAdapter.InnerHolder {
+    ): AlbumListAdapter.InnerHolder {
         return InnerHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_recommend,
@@ -76,18 +76,13 @@ class RecommendListAdapter : RecyclerView.Adapter<RecommendListAdapter.InnerHold
     }
 
     override fun getItemCount(): Int {
-        if (mdata != null) {
-            return mdata.size
-        }
-        return 0
+        return mdata.size
     }
 
 
     fun setData(albumList: List<Album>) {
-        if (albumList != null) {
-            mdata.clear()
-            mdata.addAll(albumList)
-        }
+        mdata.clear()
+        mdata.addAll(albumList)
         //更新UI
         notifyDataSetChanged()
     }
@@ -99,6 +94,11 @@ class RecommendListAdapter : RecyclerView.Adapter<RecommendListAdapter.InnerHold
 
 
     interface onReccommendItemClickListener {
-        fun onItemClick(postion: Int,album: Album)
+        fun onItemClick(postion: Int, album: Album)
+    }
+
+
+    fun DateSize(): Int {
+        return mdata.size
     }
 }

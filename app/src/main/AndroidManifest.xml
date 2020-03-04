@@ -50,6 +50,9 @@
         <service
                 android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService"
                 android:process=":player" />
+
+        <activity android:name=".SearchActivity">
+        </activity>
     </application>
 
 </manifest>

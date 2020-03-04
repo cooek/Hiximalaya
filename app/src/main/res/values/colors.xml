@@ -7,7 +7,8 @@
         <color name="recyclerbg">#fff4f4f4</color>
 
     <color name="whiten">#FFFFFF</color>
-    <color name="sub_text_title">#979797</color>
+    <color name="search_sub_text_title">#979797</color>
+    <color name="search_sub_text_title99">#aaefefef</color>
     <color name="play_list_text_color">#7D828C</color>
     <color name="play_list_line_color">#ECEEF0</color>
 

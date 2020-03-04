@@ -1,12 +1,14 @@
-package com.example.tingximalaya.api
+package com.example.tingximalaya.data
 
-import com.example.tingximalaya.presenters.AlbumDetailPresenter
 import com.example.tingximalaya.utils.Constants
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack
 import com.ximalaya.ting.android.opensdk.model.album.GussLikeAlbumList
+import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList
 import com.ximalaya.ting.android.opensdk.model.track.TrackList
+import com.ximalaya.ting.android.opensdk.model.word.HotWordList
+import com.ximalaya.ting.android.opensdk.model.word.SuggestWords
 
 /**
  * @return:$
@@ -44,5 +46,35 @@ object XimaLayApi {
         CommonRequest.getTracks(map, iDataCallBack)
     }
 
+    /**
+     * 关键字搜索
+     */
+    fun searchByKeyword(keyword: String, page: Int, callback: IDataCallBack<SearchAlbumList>) {
+        var map = HashMap<String, String>()
+        map[DTransferConstants.SEARCH_KEY] = keyword
+        map[DTransferConstants.PAGE] = page.toString()
+        map[DTransferConstants.PLAYED_SECS] = Constants.COUNT_RECOMMEDN.toString()
+        CommonRequest.getSearchedAlbums(map, callback)
+    }
+
+    /**
+     * h获取推荐热词
+     */
+    fun HotWords(callback: IDataCallBack<HotWordList>) {
+        var map = HashMap<String, String>()
+        map[DTransferConstants.TOP] = Constants.CONUT_HOT_WOED.toString()
+        CommonRequest.getHotWords(map, callback)
+    }
+
+    /**
+     *
+     *关键字联想词
+     *
+     */
+    fun SuggestWord(keyWord: String, callback: IDataCallBack<SuggestWords>) {
+        var map = HashMap<String, String>()
+        map.put(DTransferConstants.SEARCH_KEY, keyWord)
+        CommonRequest.getSuggestWord(map, callback)
+    }
 
 }

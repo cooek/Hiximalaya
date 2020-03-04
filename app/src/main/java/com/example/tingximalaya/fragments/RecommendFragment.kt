@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.DetailActivity
 import com.example.tingximalaya.R
-import com.example.tingximalaya.adapters.RecommendListAdapter
+import com.example.tingximalaya.adapters.AlbumListAdapter
 import com.example.tingximalaya.base.BaseFragment
 import com.example.tingximalaya.interfaces.IRecommendViewCallBack
 import com.example.tingximalaya.presenters.AlbumDetailPresenter
@@ -26,7 +26,7 @@ import org.jetbrains.anko.support.v4.startActivity
  * @Date: 2020/2/3$ 14:53$
  */
 class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetryClikListener,
-    RecommendListAdapter.onReccommendItemClickListener {
+    AlbumListAdapter.onReccommendItemClickListener {
 
 
     private var muiLoder: UILoder? = null
@@ -34,7 +34,7 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetr
 
     private val mRecommendPresenter: RecommendPresenter by lazy { RecommendPresenter }
 
-    private val mRecommendListAdapter: RecommendListAdapter by lazy { RecommendListAdapter() }
+    private val mAlbumListAdapter: AlbumListAdapter by lazy { AlbumListAdapter() }
 
     /**
      * IllegalArgumentException
@@ -102,8 +102,8 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetr
             }
         })
 
-        recommend_list.adapter = mRecommendListAdapter
-        mRecommendListAdapter.ItemClickListenter(this)
+        recommend_list.adapter = mAlbumListAdapter
+        mAlbumListAdapter.ItemClickListenter(this)
 
 
     }
@@ -111,7 +111,7 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetr
 
     override fun onRecommendListLoaded(reuslt: List<Album>) {
         //注意 配置了androidx的同学 RecyclerView 在androidx.recyclerview.widget.RecyclerView 这里
-        mRecommendListAdapter.setData(reuslt)
+        mAlbumListAdapter.setData(reuslt)
         muiLoder?.updateStatus(UILoder.UlStatus.SUCCESS)
     }
 
@@ -141,9 +141,7 @@ class RecommendFragment : BaseFragment(), IRecommendViewCallBack, UILoder.onRetr
 
     //网络错误接口回调
     override fun onRetryClick() {
-        if (mRecommendPresenter != null) {
-            mRecommendPresenter.getRecommendList()
-        }
+        mRecommendPresenter.getRecommendList()
     }
 
     //点击事件

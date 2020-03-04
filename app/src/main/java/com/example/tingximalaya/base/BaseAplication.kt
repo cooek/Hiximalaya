@@ -19,10 +19,11 @@ class BaseAplication : Application() {
 
     private var sHandler: Handler? = null
 
-    private val mcontext: Context by lazy { baseContext }
+    private var mcontext: Context? = null
 
     override fun onCreate() {
         super.onCreate()
+        mcontext = baseContext
         val mXimalaya: CommonRequest = CommonRequest.getInstanse()
         when (DTransferConstants.isRelease) {
             true -> {
@@ -57,9 +58,8 @@ class BaseAplication : Application() {
     /**
      * 获取当前this
      */
-    fun AppContext(): Context {
+    fun AppContext(): Context? {
         return mcontext
-
     }
 
 }

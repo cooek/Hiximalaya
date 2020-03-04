@@ -47,10 +47,13 @@ class PlayerTrackPageAdapter : PagerAdapter() {
         container.addView(view)
         var imageview = view.findViewById<ImageView>(R.id.track_Pager_item)
         var imgurl = mdata[position].coverUrlLarge
+
         if (imgurl != null) {
             Glide.with(container.context)
-                .load(imgurl).placeholder(R.mipmap.timg)
+                .load(imgurl).placeholder(R.mipmap.timg).error(R.mipmap.logo)
                 .into(imageview)
+        }else{
+            imageview.setImageResource(R.mipmap.logo)
         }
         return view
     }
