@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 
-import com.example.tingximalaya.data.SubscriptDao.XimalayaDbHelper;
 import com.example.tingximalaya.interfaces.ISubDao;
 
 import com.example.tingximalaya.interfaces.ISubDaoCallBack;
@@ -30,7 +29,7 @@ public class SubscriptionDao implements ISubDao {
     public static SubscriptionDao getInstance(Context context) {
         mcontext = context;
         if (mcontext != null) {
-            System.out.println("1111111111111111111111111111-------->");
+
             mXimalayaDBHelper = new XimalayaDbHelper(mcontext);
         }
 
@@ -53,7 +52,7 @@ public class SubscriptionDao implements ISubDao {
         SQLiteDatabase db = null;
         boolean isAddSuccess = false;
         try {
-            System.out.println("1111111111111111111111111111-------->添加");
+
             db = mXimalayaDBHelper.getWritableDatabase();
             db.beginTransaction();
             ContentValues contentValues = new ContentValues();

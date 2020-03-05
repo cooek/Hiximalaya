@@ -19,6 +19,7 @@ object RecommendPresenter : IRecommendPresenter {
 
     private var mCurrentRecommedTrack: List<Album>? = null
 
+    private var malbumList: List<Album>? = null
 
     private var mCallback: ArrayList<IRecommendViewCallBack> = ArrayList()
     /**
@@ -42,13 +43,18 @@ object RecommendPresenter : IRecommendPresenter {
      * 猜你喜欢
      */
     override fun getRecommendList() {
+        if (malbumList != null && malbumList?.size!! > 0) {
+            handlerRecommendResult(malbumList!!)
+            return
+        }
         updateLoading()
         XimaLayApi.getRecommenList(object : IDataCallBack<GussLikeAlbumList> {
             override fun onSuccess(p0: GussLikeAlbumList?) {
                 if (p0 != null) {
-                    var albumList = p0.albumList
-                    if (albumList != null) {
-                        handlerRecommendResult(albumList)
+                    malbumList = p0.albumList
+
+                    if (malbumList != null) {
+                        handlerRecommendResult(malbumList!!)
                         Logutils.d(
                             RecommendPresenter::class.java.toString(),
                             "${p0.albumList.size}" + "个"
@@ -98,7 +104,7 @@ object RecommendPresenter : IRecommendPresenter {
         }
     }
 
-    fun CurrentTrack(): List<Album>?{
+    fun CurrentTrack(): List<Album>? {
         return mCurrentRecommedTrack
     }
 

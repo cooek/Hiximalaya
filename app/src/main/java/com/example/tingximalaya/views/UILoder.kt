@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_error_view.view.*
  * @Author:cooek@foxmail.com$
  * @Date: 2020/2/10$ 9:56$
  */
-abstract class UILoder : FrameLayout {
+open abstract class UILoder : FrameLayout {
     private var RetryClikListeners: onRetryClikListener? = null
 
     private var mLoadingView: View? = null
@@ -48,6 +48,7 @@ abstract class UILoder : FrameLayout {
      */
     fun updateStatus(ststus: UlStatus) {
         this.mCurrentStstus = ststus
+
         switchUIByCurrentStstus()
         println("running from lambda: ${Thread.currentThread()}")
     }
@@ -110,7 +111,7 @@ abstract class UILoder : FrameLayout {
 
     }
 
-    private fun getEmptView(): View? {
+    open fun getEmptView(): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_empty_view, this, false)
     }
 

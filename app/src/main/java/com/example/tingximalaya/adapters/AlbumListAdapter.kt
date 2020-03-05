@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tingximalaya.R
+import com.example.tingximalaya.fragments.SubscritFragment
 import com.squareup.picasso.Picasso
 
 
@@ -22,6 +23,7 @@ import com.ximalaya.ting.android.opensdk.model.album.Album
 class AlbumListAdapter : RecyclerView.Adapter<AlbumListAdapter.InnerHolder>() {
 
 
+    private var monAlbumItemLongClickListener: onAlbumItemLongClickListener? = null
     private var monReccommendItemClickListener: onReccommendItemClickListener? = null
 
     override fun onBindViewHolder(holder: InnerHolder, position: Int) {
@@ -33,6 +35,16 @@ class AlbumListAdapter : RecyclerView.Adapter<AlbumListAdapter.InnerHolder>() {
         }
         holder.setdata(mdata[position])
 
+        holder.itemView.setOnLongClickListener(object : View.OnLongClickListener {
+            override fun onLongClick(p0: View?): Boolean {
+                if (monAlbumItemLongClickListener != null) {
+                    var clickposition = p0?.tag as Int
+                    monAlbumItemLongClickListener?.onItemLongClick(mdata[clickposition])
+                }
+                return true
+            }
+
+        })
 
     }
 
@@ -63,7 +75,7 @@ class AlbumListAdapter : RecyclerView.Adapter<AlbumListAdapter.InnerHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): AlbumListAdapter.InnerHolder {
+    ): InnerHolder {
         return InnerHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.item_recommend,
@@ -97,8 +109,17 @@ class AlbumListAdapter : RecyclerView.Adapter<AlbumListAdapter.InnerHolder>() {
         fun onItemClick(postion: Int, album: Album)
     }
 
+    fun onSetonAlbumItemLongClickListener(LongClickListener: onAlbumItemLongClickListener) {
+        this.monAlbumItemLongClickListener = LongClickListener
+    }
+
+    interface onAlbumItemLongClickListener {
+        fun onItemLongClick(album: Album)
+    }
 
     fun DateSize(): Int {
         return mdata.size
     }
+
+
 }

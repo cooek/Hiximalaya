@@ -82,9 +82,8 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pleyer)
         mviewPages = findViewById(R.id.track_page_view)
-        mPlayerPresenter.getcontext(baseContext)
         mPlayerPresenter.RegisterViewcallback(this)
-        mPlayerPresenter.PlayList()
+
         initEvent()
         initBgAnimation()
         mviewPages?.adapter = mPlayerTrackPageAdapter
@@ -318,15 +317,15 @@ class PlayerActivity : BaseActivity(), IPlayerCallBack {
     }
 
     override fun onPlayError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun nextPlay(track: Track) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onPrePlay(track: Track) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onListLoaded(list: List<Track>) {

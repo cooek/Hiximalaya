@@ -25,9 +25,13 @@ interface ISubscriptCallBack {
 
 
     /**
-     * 专家加载内容
+     * 加载内容
      */
     fun onSubScriptionLoaded(album: List<Album>)
+
+
+    fun  onSubFull()
+
 
 
 

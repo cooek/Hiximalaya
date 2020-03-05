@@ -11,6 +11,7 @@ import com.example.tingximalaya.interfaces.IPlayerCallBack
 import com.example.tingximalaya.presenters.PlayerPresenter
 import com.example.tingximalaya.presenters.RecommendPresenter
 import com.ximalaya.ting.android.opensdk.model.track.Track
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl
 import kotlinx.android.synthetic.main.activity_main.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper

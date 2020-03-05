@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.DetailActivity
@@ -141,6 +143,15 @@ class SearchActivity : BaseActivity(), ISearchCallBack {
             mUlLoader = object : UILoder(this) {
                 override fun getSuccessView(container: ViewGroup?): View? {
                     return SuccessView()
+                }
+
+
+                override fun getEmptView(): View? {
+                    var itemview = LayoutInflater.from(context)
+                        .inflate(R.layout.fragment_sub_script_view, this, false)
+                    var itemtext: TextView = itemview.findViewById(R.id.text_sub_scription)
+                    itemtext.text = "没有相关内容！抱歉"
+                    return itemview
                 }
 
 

@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.tingximalaya.data.XimaLayApi
-import com.example.tingximalaya.base.BaseAplication
+import com.example.tingximalaya.base.BaseApplication
 import com.example.tingximalaya.interfaces.IPlayerCallBack
 import com.example.tingximalaya.interfaces.lPlayerPresenter
 import com.example.tingximalaya.utils.Logutils
@@ -45,7 +45,12 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
 
     private var DEFAULT_PLAY_INDEX = 0
 
-    private val mXlayerManager: XmPlayerManager by lazy { XmPlayerManager.getInstance(BaseAplication().AppContext()) }
+    private val mXlayerManager: XmPlayerManager by lazy {
+        XmPlayerManager.getInstance(
+            BaseApplication.getAppContext()
+        )
+    }
+
 
     private var isPlayListSet = false
 
@@ -58,34 +63,27 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
     //PLAY_MODEL_RANDOM
     //PLAY_MODEL_SINGLE_LOOP
 
-    public val PLAY_MODEL_LIST_INT: Int = 0
-    public val PLAY_MODEL_LIST_LOOP_INT: Int = 1
-    public val PLAY_MODEL_RANDOM_INT: Int = 2
-    public val PLAY_MODEL_SINGLE_LOOP_INT: Int = 3
+    val PLAY_MODEL_LIST_INT: Int = 0
+    val PLAY_MODEL_LIST_LOOP_INT: Int = 1
+    val PLAY_MODEL_RANDOM_INT: Int = 2
+    val PLAY_MODEL_SINGLE_LOOP_INT: Int = 3
 
-    public val PLAY_MODE_SP_NAME = "PlayMode"
-    public val PLAY_MODE_SP_KEY = "currentPlayMode"
+    val PLAY_MODE_SP_NAME = "PlayMode"
+    val PLAY_MODE_SP_KEY = "currentPlayMode"
 
     private var playModeSP: SharedPreferences? = null
 
-    private var mContext: Context? = null
 
     init {
         //广告相关接口
         mXlayerManager.addAdsStatusListener(this)
         //注册播放器相关接口
         mXlayerManager.addPlayerStatusListener(this)
+        playModeSP = BaseApplication.getAppContext().getSharedPreferences(PLAY_MODE_SP_NAME, Context.MODE_PRIVATE)
 
     }
 
-    fun getcontext(
-        baseContext: Context
-    ) {
-        mContext = baseContext
-        playModeSP = mContext?.getSharedPreferences(PLAY_MODE_SP_NAME, Context.MODE_PRIVATE)
 
-
-    }
 
     fun setPlayList(
         list: List<Track>,
@@ -101,7 +99,7 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
 
     override fun play() {
         if (isPlayListSet) {
-            this.mXlayerManager.play()
+            mXlayerManager.play()
         }
     }
 
@@ -110,6 +108,7 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
     }
 
     override fun stop() {
+
     }
 
     override fun playPre() {
@@ -118,6 +117,7 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
     }
 
     override fun playNext() {
+        println("11111111111111111111--->playNext")
 
         mXlayerManager.playNext()
     }
@@ -179,9 +179,12 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
 
     override fun PlayList() {
         var playlist = mXlayerManager.playList
-        for (iPlayerCallBack in mCallback) {
-            iPlayerCallBack.onListLoaded(playlist)
+        if (playlist != null) {
+            for (iPlayerCallBack in mCallback) {
+                iPlayerCallBack.onListLoaded(playlist)
+            }
         }
+
     }
 
     override fun playByIndex(index: Int) {
@@ -204,6 +207,11 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
         t: IPlayerCallBack
     ) {
 
+        if (!mCallback.contains(t)) {
+            mCallback.add(t)
+        }
+
+        PlayList()
         if (mTrack != null) {
             t.onTrackUpdate(mTrack!!, mCurrentIndex)
             t.onProgressChange(mCurrentProgressPosition, mProgressDuration)
@@ -290,14 +298,22 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
     }
 
     override fun onSoundSwitch(p0: PlayableModel?, p1: PlayableModel?) {
+
+
         Logutils.d(TAG, "onSoundSwitch....切歌")
         mCurrentIndex = mXlayerManager.currentIndex
 
+
         if (p1 is Track) {
-            mTrack = p1 as Track
+            mTrack = p1
+            //播放记录
+            println("111111111111111111111--mTrack-->${mTrack}")
+            val history = HistoryPresenter
+            history.addHistory(p1)
             for (iPlayerCallBack in mCallback) {
                 iPlayerCallBack.onTrackUpdate(mTrack!!, mCurrentIndex)
             }
+
         }
 
         //修改

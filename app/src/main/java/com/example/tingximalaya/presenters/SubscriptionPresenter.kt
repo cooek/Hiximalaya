@@ -2,8 +2,6 @@ package com.example.tingximalaya.presenters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.example.tingximalaya.base.BaseAplication
-import com.example.tingximalaya.data.Constants
 import com.example.tingximalaya.data.SubscriptionDao
 import com.example.tingximalaya.interfaces.ISubDaoCallBack
 import com.example.tingximalaya.interfaces.ISubcriptPresenter
@@ -13,6 +11,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.schedulers.Schedulers
 import com.example.tingximalaya.data.Constants.MAX_SUB_COUNT
+
 
 
 /**
@@ -30,16 +29,13 @@ object SubscriptionPresenter : ISubcriptPresenter, ISubDaoCallBack {
     fun GetContext(context: Context) {
         mSubscriptionDao = SubscriptionDao.getInstance(context)
         mSubscriptionDao?.setCallBack(this)
-
-
     }
 
     private var mMap: MutableMap<Long, Album> = HashMap()
 
 
-    private fun listSubscriptions() {
+    fun listSubscriptions() {
         Observable.create(ObservableOnSubscribe<Any> {
-
             mSubscriptionDao?.listAlbum()
         }).subscribeOn(Schedulers.io()).subscribe()
     }
@@ -48,13 +44,13 @@ object SubscriptionPresenter : ISubcriptPresenter, ISubDaoCallBack {
     private var mCallback: ArrayList<ISubscriptCallBack> = ArrayList()
 
     override fun addSubScription(album: Album) {
-//        if (mMap.size >= MAX_SUB_COUNT) {
-//            //给出提示
-//            for (iSubscriptCallBack in mCallback) {
-////                iSubscriptCallBack.onSubFull()
-//            }
-//            return
-//        }
+        if (mMap.size >= MAX_SUB_COUNT) {
+            //给出提示
+            for (iSubscriptCallBack in mCallback) {
+                iSubscriptCallBack.onSubFull()
+            }
+            return
+        }
         Observable.create(ObservableOnSubscribe<Any> {
             mSubscriptionDao?.addAlbum(album)
         }).subscribeOn(Schedulers.io()).subscribe()
@@ -94,9 +90,12 @@ object SubscriptionPresenter : ISubcriptPresenter, ISubDaoCallBack {
     override fun addResult(isSuccess: Boolean) {
         listSubscriptions()
 
+
+
         for (iSubscriptCallBack in mCallback) {
             iSubscriptCallBack.onAddResult(isSuccess)
         }
+
 
     }
 
@@ -118,7 +117,7 @@ object SubscriptionPresenter : ISubcriptPresenter, ISubDaoCallBack {
         for (iSubscriptCallBack in mCallback) {
             iSubscriptCallBack.onSubScriptionLoaded(album)
         }
-        println("11111111111111111111-->" + Thread.currentThread())
+
 
     }
 

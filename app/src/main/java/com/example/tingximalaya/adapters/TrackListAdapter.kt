@@ -16,9 +16,10 @@ import java.text.SimpleDateFormat
  * @Author:$
  * @Date: 2020/2/21$ 14:21$
  */
-class DetailListAdapter : RecyclerView.Adapter<DetailListAdapter.Innerholder>() {
+class TrackListAdapter : RecyclerView.Adapter<TrackListAdapter.Innerholder>() {
 
-    private var mDetailList: MutableList<Track> = arrayListOf()
+    private  var mItemLongClickListener: ItemLongClickListener?=null
+    private var mDetailList: ArrayList<Track> = ArrayList()
 
 
     private var mitemListener: ItemCilckListener? = null
@@ -48,6 +49,14 @@ class DetailListAdapter : RecyclerView.Adapter<DetailListAdapter.Innerholder>() 
                 mitemListener?.onItemClick(mDetailList,position)
             }
         }
+        itemview.setOnLongClickListener(object :View.OnLongClickListener{
+            override fun onLongClick(p0: View?): Boolean {
+                if (mItemLongClickListener != null) {
+                    mItemLongClickListener?.onItemLongClick(mDetailList[position])
+                }
+                return true
+            }
+        })
         holder.setData(mDetailList[position], position)
 
     }
@@ -97,6 +106,16 @@ class DetailListAdapter : RecyclerView.Adapter<DetailListAdapter.Innerholder>() 
     interface ItemCilckListener {
         fun onItemClick(tacks: List<Track>,index:Int)
     }
+
+
+    fun setLongItemClickListener(itemLongClickListener:ItemLongClickListener){
+        this.mItemLongClickListener =itemLongClickListener
+    }
+
+    interface  ItemLongClickListener{
+        fun onItemLongClick(tacks: Track)
+    }
+
 
 }
 

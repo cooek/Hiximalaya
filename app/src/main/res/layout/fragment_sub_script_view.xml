@@ -21,11 +21,11 @@
         </ImageView>
 
         <TextView
-                android:id="@+id/text_empyt"
+                android:id="@+id/text_sub_scription"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
-                android:text="我擦！内容为空">
+                android:text="内容~为空赶紧去订阅吧！">
 
         </TextView>
     </LinearLayout>

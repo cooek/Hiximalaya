@@ -3,6 +3,7 @@ package com.example.tingximalaya.base
 import android.app.Application
 import android.content.Context
 import android.os.Handler
+import com.example.tingximalaya.presenters.SubscriptionPresenter
 import com.example.tingximalaya.utils.Logutils
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
@@ -21,9 +22,10 @@ class BaseAplication : Application() {
 
     private var mcontext: Context? = null
 
+
     override fun onCreate() {
         super.onCreate()
-        mcontext = baseContext
+//        mcontext = baseContext
         val mXimalaya: CommonRequest = CommonRequest.getInstanse()
         when (DTransferConstants.isRelease) {
             true -> {
@@ -47,10 +49,14 @@ class BaseAplication : Application() {
         Logutils.init(this.packageName, false)
         sHandler = Handler()
 
-//        mcontext = baseContext
+
+        mcontext = AppContext()
     }
 
     fun getHandler(): Handler? {
+        if (sHandler != null) {
+            return sHandler
+        }
         return sHandler
     }
 
@@ -58,8 +64,8 @@ class BaseAplication : Application() {
     /**
      * 获取当前this
      */
-    fun AppContext(): Context? {
-        return mcontext
+    fun AppContext(): Context {
+        return mcontext!!
     }
 
 }

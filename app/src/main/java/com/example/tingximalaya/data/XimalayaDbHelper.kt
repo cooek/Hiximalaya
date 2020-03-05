@@ -1,4 +1,4 @@
-package com.example.tingximalaya.data.SubscriptDao
+package com.example.tingximalaya.data
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -38,22 +38,22 @@ class XimalayaDbHelper : SQLiteOpenHelper {
                 ")"
         p0?.execSQL(subTbSql)
         //创建历史记录表
-//        val historyTbSql = "create table " + Constants.HISTORY_TB_NAME + "(" +
-//                Constants.HISTORY_ID + " integer primary key autoincrement, " +
-//                Constants.HISTORY_TRACK_ID + " integer, " +
-//                Constants.HISTORY_TITLE + " varchar," +
-//                Constants.HISTORY_COVER + " varchar," +
-//                Constants.HISTORY_PLAY_COUNT + " integer," +
-//                Constants.HISTORY_DURATION + " integer," +
-//                Constants.HISTORY_AUTHOR + " varchar," +
-//                Constants.HISTORY_UPDATE_TIME + " integer" +
-//                ")"
-//        p0?.execSQL(historyTbSql)
+        val historyTbSql = "create table " + Constants.HISTORY_TB_NAME + "(" +
+                Constants.HISTORY_ID + " integer primary key autoincrement, " +
+                Constants.HISTORY_TRACK_ID + " integer, " +
+                Constants.HISTORY_TITLE + " varchar," +
+                Constants.HISTORY_COVER + " varchar," +
+                Constants.HISTORY_PLAY_COUNT + " integer," +
+                Constants.HISTORY_DURATION + " integer," +
+                Constants.HISTORY_AUTHOR + " varchar," +
+                Constants.HISTORY_UPDATE_TIME + " integer" +
+                ")"
+        p0?.execSQL(historyTbSql)
 
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 

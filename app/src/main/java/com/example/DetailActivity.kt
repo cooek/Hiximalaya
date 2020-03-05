@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tingximalaya.PlayerActivity
 import com.example.tingximalaya.R
-import com.example.tingximalaya.adapters.DetailListAdapter
+import com.example.tingximalaya.adapters.TrackListAdapter
 import com.example.tingximalaya.base.BaseActivity
+import com.example.tingximalaya.data.Constants
 import com.example.tingximalaya.interfaces.IAlbumDetailViewCallBack
 import com.example.tingximalaya.interfaces.IPlayerCallBack
 import com.example.tingximalaya.interfaces.ISubscriptCallBack
@@ -28,7 +29,6 @@ import com.ximalaya.ting.android.opensdk.model.album.Album
 import com.ximalaya.ting.android.opensdk.model.track.Track
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.coroutines.runBlocking
 import net.lucode.hackware.magicindicator.buildins.UIUtil
 import org.jetbrains.anko.runOnUiThread
 import org.jetbrains.anko.startActivity
@@ -42,10 +42,10 @@ import org.jetbrains.anko.toast
  * @Date: 2020/2/21$ 9:14$
  */
 class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetryClikListener,
-    DetailListAdapter.ItemCilckListener, IPlayerCallBack, ISubscriptCallBack {
-
+    TrackListAdapter.ItemCilckListener, IPlayerCallBack, ISubscriptCallBack {
 
     private var mCurrentAlbum: Album? = null
+
     private var mTrackTitle: String? = null
     private var mCurrentPage = 1
 
@@ -58,7 +58,7 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
     private var mCurrentTrack: List<Track>? = null
 
 
-    private var mdetailListAdapter: DetailListAdapter? = null
+    private var mMdetailListAdapter: TrackListAdapter? = null
 
     private val mPlayerPresenter by lazy { PlayerPresenter }
 
@@ -120,6 +120,7 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
         mAlbumDetailPresenter.RegisterViewcallback(this)
         mPlayerPresenter.RegisterViewcallback(this)
         mSubscriptionPresenter.RegisterViewcallback(this)
+
     }
 
 
@@ -174,7 +175,7 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
 
 
         //线性布局管理器
-        mdetailListAdapter = DetailListAdapter()
+        mMdetailListAdapter = TrackListAdapter()
         mLlinearLayoutManager = LinearLayoutManager(this)
         mLlinearLayoutManager?.orientation = LinearLayoutManager.VERTICAL
 
@@ -183,7 +184,7 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
         recyclerView.layoutManager = mLlinearLayoutManager
         //适配器
 
-        recyclerView.adapter = mdetailListAdapter
+        recyclerView.adapter = mMdetailListAdapter
 
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
@@ -202,7 +203,7 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
         })
 
 
-        mdetailListAdapter?.setItemCilckListener(this)
+        mMdetailListAdapter?.setItemCilckListener(this)
 
         mrefress_layout?.setOnRefreshListener(object : RefreshListenerAdapter() {
             override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
@@ -239,7 +240,7 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
         if (muiLoader != null) {
             muiLoader?.updateStatus(UILoder.UlStatus.SUCCESS)
         }
-        mdetailListAdapter?.setData(tacks)
+        mMdetailListAdapter?.setData(tacks)
 
     }
 
@@ -406,6 +407,11 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
     override fun onSubScriptionLoaded(album: List<Album>) {
 
     }
+    override fun onSubFull() {
+
+        MyToas("订阅数量不能超过${Constants.MAX_HISTORY_COUNT}条啦~")
+    }
+
 
 
 }
