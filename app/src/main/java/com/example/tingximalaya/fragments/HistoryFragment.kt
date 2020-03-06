@@ -140,7 +140,7 @@ class HistoryFragment : BaseFragment(), IHistoryCallBack, TrackListAdapter.ItemC
     }
 
     override fun onItemClick(tacks: List<Track>, index: Int) {
-
+        mPlayerPresenter.IsRevers(true)
         mPlayerPresenter.setPlayList(tacks, index)
         startActivity<PlayerActivity>()
 

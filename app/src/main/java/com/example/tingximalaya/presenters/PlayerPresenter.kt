@@ -33,6 +33,7 @@ import kotlin.collections.ArrayList
 object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatusListener {
 
 
+    private var mHitsoryRevers: Boolean = false
     private var mProgressDuration: Int = 0
     private var mCurrentProgressPosition: Int = 0
     private var mCallback: ArrayList<IPlayerCallBack> = ArrayList()
@@ -45,11 +46,7 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
 
     private var DEFAULT_PLAY_INDEX = 0
 
-    private val mXlayerManager: XmPlayerManager by lazy {
-        XmPlayerManager.getInstance(
-            BaseApplication.getAppContext()
-        )
-    }
+    private  val mXlayerManager: XmPlayerManager = XmPlayerManager.getInstance(BaseApplication.getAppContext())
 
 
     private var isPlayListSet = false
@@ -79,10 +76,10 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
         mXlayerManager.addAdsStatusListener(this)
         //注册播放器相关接口
         mXlayerManager.addPlayerStatusListener(this)
-        playModeSP = BaseApplication.getAppContext().getSharedPreferences(PLAY_MODE_SP_NAME, Context.MODE_PRIVATE)
+        playModeSP = BaseApplication.getAppContext()
+            .getSharedPreferences(PLAY_MODE_SP_NAME, Context.MODE_PRIVATE)
 
     }
-
 
 
     fun setPlayList(
@@ -369,20 +366,28 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
     }
 
     override fun reversePlayList() {
-        var palyList: List<Track> = mXlayerManager.playList
 
-        mCurrentIndex = palyList.size - 1 - mCurrentIndex
-        Collections.reverse(palyList)
-        misReverse = !misReverse
-        mXlayerManager.setPlayList(palyList, mCurrentIndex)
+        if (!mHitsoryRevers) {
 
-        mTrack = mXlayerManager.currSound as Track
+            var palyList: List<Track> = mXlayerManager.playList
+
+            mCurrentIndex = palyList.size - 1 - mCurrentIndex
+            Collections.reverse(palyList)
+            misReverse = !misReverse
+            mXlayerManager.setPlayList(palyList, mCurrentIndex)
+
+            mTrack = mXlayerManager.currSound as Track
 
 
-        for (iPlayerCallBack in mCallback) {
-            iPlayerCallBack.onListLoaded(palyList)
-            iPlayerCallBack.onTrackUpdate(mTrack!!, mCurrentIndex)
-            iPlayerCallBack.updateListOrder(misReverse)
+            for (iPlayerCallBack in mCallback) {
+                iPlayerCallBack.onListLoaded(palyList)
+                iPlayerCallBack.onTrackUpdate(mTrack!!, mCurrentIndex)
+                iPlayerCallBack.updateListOrder(misReverse)
+            }
+        } else {
+            for (iPlayerCallBack in mCallback) {
+                iPlayerCallBack.updateListOrder(misReverse)
+            }
         }
     }
 
@@ -414,4 +419,7 @@ object PlayerPresenter : lPlayerPresenter, IXmAdsStatusListener, IXmPlayerStatus
     /**
      * end
      */
+    fun IsRevers(isrevers: Boolean) {
+        this.mHitsoryRevers = isrevers
+    }
 }

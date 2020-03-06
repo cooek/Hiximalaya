@@ -173,7 +173,6 @@ class DetailActivity : BaseActivity(), IAlbumDetailViewCallBack, UILoder.onRetry
 
         mrefress_layout = view.findViewById(R.id.refress_layout)
 
-
         //线性布局管理器
         mMdetailListAdapter = TrackListAdapter()
         mLlinearLayoutManager = LinearLayoutManager(this)
