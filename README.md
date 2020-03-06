@@ -3,6 +3,10 @@
 基于喜马拉雅SDK 构建的APP
  出于学习的目，基本涵盖了当前Android主流开源框架，是一个非常适合小白学习的项目。废话不多说，先上截图：     
   
+ * [java版教程](https://www.bilibili.com/video/av69452769) 
+ 
+ * [阳光沙滩社区](https://www.sunofbeach.net/) 
+ 
  ![](https://github.com/cooek/Hiximalaya/blob/master/app/album/1.jpg)&nbsp;&nbsp;&nbsp;
  ![](https://github.com/cooek/Hiximalaya/blob/master/app/album/1222.jpg)&nbsp;&nbsp;&nbsp;
  ![](https://github.com/cooek/Hiximalaya/blob/master/app/album/13333.jpg)&nbsp;&nbsp;&nbsp;
